@@ -9,20 +9,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/3d-theme.css">
-  <link rel="stylesheet" href="popup/popup.css">
   <style>
     :root {
       --hero-glow: radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.15), rgba(112, 0, 255, 0.12) 40%, transparent 70%);
     }
 
-    body {
-      background-color: var(--bg-deep);
-      background-image: var(--bg-mesh), var(--hero-glow);
-      color: var(--text-primary);
-      font-family: 'Outfit', -apple-system, sans-serif;
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-height: 100vh;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+      background-color: var(--bg-deep) !important;
+      background-image: var(--bg-mesh), var(--hero-glow) !important;
+      color: var(--text-primary);
+      font-family: 'Outfit', -apple-system, sans-serif;
       line-height: 1.6;
     }
 
@@ -31,15 +37,16 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      width: 100%;
+      max-width: 1200px;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      background: rgba(10, 14, 26, 0.75);
+      background: rgba(10, 14, 26, 0.85);
       border-bottom: 1px solid var(--glass-border);
       padding: 14px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1200px;
       margin: 0 auto;
       border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
@@ -503,8 +510,81 @@
       border-radius: 16px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 30px rgba(0, 210, 255, 0.3);
       border: 1px solid var(--glass-border-hover);
-      background: var(--bg-surface);
+      background: #111726;
       overflow: hidden;
+    }
+
+    .real-popup-mock-wrapper .header-card {
+      background: #161d2f;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      margin: 12px;
+      padding: 12px;
+    }
+    .real-popup-mock-wrapper .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .real-popup-mock-wrapper .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .real-popup-mock-wrapper .logo-badge {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .real-popup-mock-wrapper .storage-widget {
+      margin: 8px 0;
+    }
+    .real-popup-mock-wrapper .storage-info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+    .real-popup-mock-wrapper .meter-wrapper {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .real-popup-mock-wrapper .meter-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      border-radius: 2px;
+    }
+    .real-popup-mock-wrapper .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .real-popup-mock-wrapper .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 3px;
+      border-radius: 8px;
+      margin: 8px 12px;
+    }
+    .real-popup-mock-wrapper .tab-btn {
+      flex: 1;
+      padding: 5px 0;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .real-popup-mock-wrapper .tab-btn.active {
+      background: var(--primary-gradient);
+      color: #fff;
     }
 
     /* REAL PAGE 5: Real Google Form */
