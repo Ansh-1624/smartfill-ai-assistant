@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFill AI Assistant — Interactive Test Sandbox</title>
+  <link rel="stylesheet" href="styles/3d-theme.css">
+  <style>
+    body {
+      max-width: 960px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    .sandbox-container {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+    }
+    .form-section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary-start);
+      margin: 18px 0 10px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--glass-border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .log-panel {
+      position: sticky;
+      top: 20px;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+    .log-list {
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #34d399;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div style="margin-bottom: 24px; text-align: center;">
+    <h1 style="font-size:26px; font-weight:800; color:var(--text-primary);">🧪 SmartFill AI Test Application Sandbox</h1>
+    <p style="color:var(--text-secondary); margin-top:4px;">
+      Use the SmartFill popup button, context menu, or floating badge to test autofilling this realistic application form.
+    </p>
+  </div>
+
+  <div class="sandbox-container">
+    <!-- Test Form Area -->
+    <div class="glass-card-3d">
+      <form id="sampleJobForm" onsubmit="event.preventDefault(); alert('Form submitted successfully!');">
+        
+        <!-- Personal Details -->
+        <div class="form-section-title">1. Personal & Contact Information</div>
+        <div class="form-group">
+          <label class="form-label" for="applicant_fullname">Full Name</label>
+          <input type="text" id="applicant_fullname" name="applicant_fullname" class="input-3d" placeholder="e.g. Jane Doe" autocomplete="name">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" class="input-3d" placeholder="Jane" autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" class="input-3d" placeholder="Doe" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="user_email">Email Address</label>
+          <input type="email" id="user_email" name="user_email" class="input-3d" placeholder="jane.doe@example.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone_number">Phone Number</label>
+          <input type="tel" id="phone_number" name="phone_number" class="input-3d" placeholder="+1 (555) 000-1111" autocomplete="tel">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="birth_date">Date of Birth</label>
+            <input type="date" id="birth_date" name="birth_date" class="input-3d" autocomplete="bday">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gender_select">Gender</label>
+            <select id="gender_select" name="gender_select" class="input-3d">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-Binary">Non-Binary</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Address Details -->
+        <div class="form-section-title">2. Residential Address</div>
+        <div class="form-group">
+          <label class="form-label" for="street_address">Street Address</label>
+          <input type="text" id="street_address" name="street_address" class="input-3d" placeholder="100 Silicon Blvd" autocomplete="street-address">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="address_line2">Apartment / Suite</label>
+          <input type="text" id="address_line2" name="address_line2" class="input-3d" placeholder="Suite #500">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="locality_city">City</label>
+            <input type="text" id="locality_city" name="locality_city" class="input-3d" placeholder="San Francisco" autocomplete="address-level2">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="region_state">State / Province</label>
+            <input type="text" id="region_state" name="region_state" class="input-3d" placeholder="California" autocomplete="address-level1">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="postal_pincode">ZIP / PIN Code</label>
+            <input type="text" id="postal_pincode" name="postal_pincode" class="input-3d" placeholder="94105" autocomplete="postal-code">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="country_name">Country</label>
+            <input type="text" id="country_name" name="country_name" class="input-3d" placeholder="United States" autocomplete="country-name">
+          </div>
+        </div>
+
+        <!-- Professional Details -->
+        <div class="form-section-title">3. Professional & Experience</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="job_role_title">Current Job Title</label>
+            <input type="text" id="job_role_title" name="job_role_title" class="input-3d" placeholder="Senior Frontend Engineer">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="employer_company">Current Employer</label>
+            <input type="text" id="employer_company" name="employer_company" class="input-3d" placeholder="Tech Innovations Inc.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="linkedin_profile">LinkedIn URL</label>
+          <input type="url" id="linkedin_profile" name="linkedin_profile" class="input-3d" placeholder="https://linkedin.com/in/janedoe">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="github_portfolio">GitHub / Portfolio URL</label>
+          <input type="url" id="github_portfolio" name="github_portfolio" class="input-3d" placeholder="https://github.com/janedoe">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bio_summary">Executive Bio / Cover Note</label>
+          <textarea id="bio_summary" name="bio_summary" class="input-3d" placeholder="Write a few sentences about your expertise..."></textarea>
+        </div>
+
+        <!-- Identity & Custom Aliases -->
+        <div class="form-section-title">4. Government ID & Custom Aliases</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label class="form-label" for="passport_no">Passport Number</label>
+            <input type="text" id="passport_no" name="passport_no" class="input-3d" placeholder="X1234567">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pan_number">PAN / Tax ID</label>
+            <input type="text" id="pan_number" name="pan_number" class="input-3d" placeholder="ABCDE1234F">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="voter_id">Voter ID (Custom Alias)</label>
+          <input type="text" id="voter_id" name="voter_id" class="input-3d" placeholder="VOTER-12345">
+        </div>
+
+        <button type="submit" class="btn-3d btn-primary" style="width:100%; margin-top:16px; padding:12px;">
+          Submit Application
+        </button>
+      </form>
+    </div>
+
+    <!-- Live Event Inspector Log -->
+    <div class="glass-card-3d log-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="font-size:14px; font-weight:700;">📡 Live DOM Event Inspector</h3>
+        <button id="clearLogBtn" class="btn-3d btn-secondary btn-sm">Clear</button>
+      </div>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px;">
+        Watches native `input`, `change`, and `blur` events to verify SPA state binding.
+      </p>
+      <div class="log-list" id="eventLogList">
+        <div>[System] Event logger initialized. Ready for autofill...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const logList = document.getElementById('eventLogList');
+    const clearLogBtn = document.getElementById('clearLogBtn');
+
+    function logEvent(type, target, value) {
+      const row = document.createElement('div');
+      const time = new Date().toLocaleTimeString();
+      const valPreview = value ? (value.length > 20 ? value.substring(0,20)+'...' : value) : '';
+      row.innerHTML = `<span style="color:#64748b;">${time}</span> <b style="color:#00d2ff;">[${type}]</b> ${target.id || target.name || 'field'}: "${valPreview}"`;
+      logList.appendChild(row);
+      logList.scrollTop = logList.scrollHeight;
+    }
+
+    const form = document.getElementById('sampleJobForm');
+    ['input', 'change', 'blur'].forEach(evtType => {
+      form.addEventListener(evtType, (e) => {
+        if (e.target && e.target.tagName !== 'FORM') {
+          logEvent(evtType, e.target, e.target.value);
+        }
+      }, true);
+    });
+
+    clearLogBtn.addEventListener('click', () => {
+      logList.innerHTML = '<div>[System] Log cleared.</div>';
+    });
+  </script>
+</body>
+</html>

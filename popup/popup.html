@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFill AI Assistant</title>
+  <link rel="stylesheet" href="../styles/3d-theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header Section with Dynamic Greeting & Live Status -->
+    <header class="header-card glass-panel">
+      <div class="header-top">
+        <div class="brand-row">
+          <div class="logo-badge">
+            <img src="../icons/icon-32.png" alt="SmartFill Logo" class="logo-icon">
+          </div>
+          <div>
+            <h1 class="greeting-text" id="greetingText">Good Morning 👋</h1>
+            <p class="subtitle-text" id="userGreetingName">SmartFill AI Active</p>
+          </div>
+        </div>
+
+        <div class="status-badge" id="statusBadge">
+          <span class="pulse-dot"></span>
+          <span id="statusText">Active</span>
+        </div>
+      </div>
+
+      <!-- Storage Quota Meter Widget -->
+      <div class="storage-widget">
+        <div class="storage-info-row">
+          <span class="storage-label">Local Storage</span>
+          <span class="storage-value" id="storageUsageText">0.0 MB / 10 MB</span>
+        </div>
+        <div class="meter-wrapper">
+          <div class="meter-fill" id="storageMeterFill"></div>
+        </div>
+      </div>
+
+      <!-- Primary Quick Action & Vault Lock Status -->
+      <div class="header-actions">
+        <button id="quickFillBtn" class="btn-3d btn-primary fill-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
+          </svg>
+          Fill Current Form
+        </button>
+
+        <button id="lockToggleBtn" class="btn-3d btn-secondary lock-btn" title="Lock / Unlock Vault">
+          <span id="lockIcon">🔒</span>
+          <span id="lockBtnText">Locked</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs Strip -->
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" data-tab="personal">Personal</button>
+      <button class="tab-btn" data-tab="address">Address</button>
+      <button class="tab-btn" data-tab="professional">Pro</button>
+      <button class="tab-btn" data-tab="documents">Docs</button>
+      <button class="tab-btn" data-tab="custom">Custom</button>
+      <button class="tab-btn" data-tab="settings">⚙️</button>
+    </nav>
+
+    <!-- Main Content Tab Panels -->
+    <main class="tab-content-container">
+      
+      <!-- Personal Information Tab -->
+      <section id="tab-personal" class="tab-panel active">
+        <div class="glass-card-3d">
+          <div class="form-group">
+            <label class="form-label" for="pFullName">Full Name</label>
+            <input type="text" id="pFullName" class="input-3d" placeholder="e.g. Alex Morgan">
+          </div>
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="pFirstName">First Name</label>
+              <input type="text" id="pFirstName" class="input-3d" placeholder="Alex">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pLastName">Last Name</label>
+              <input type="text" id="pLastName" class="input-3d" placeholder="Morgan">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pEmail">Email Address</label>
+            <input type="email" id="pEmail" class="input-3d" placeholder="alex.morgan@example.com">
+            <span class="validation-hint" id="pEmailHint"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pPhone">Phone Number</label>
+            <input type="tel" id="pPhone" class="input-3d" placeholder="+1 (555) 234-5678">
+            <span class="validation-hint" id="pPhoneHint"></span>
+          </div>
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="pDob">Date of Birth</label>
+              <input type="date" id="pDob" class="input-3d">
+              <span class="validation-hint" id="pDobHint"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pGender">Gender</label>
+              <select id="pGender" class="input-3d">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Address Tab -->
+      <section id="tab-address" class="tab-panel">
+        <div class="glass-card-3d">
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="aFlatNo">House / Flat / Bldg No.</label>
+              <input type="text" id="aFlatNo" class="input-3d" placeholder="e.g. Flat 4B, Tower 2">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="aStreet">Street / Locality</label>
+              <input type="text" id="aStreet" class="input-3d" placeholder="e.g. 123 Innovation Way">
+            </div>
+          </div>
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="aCity">City / Town</label>
+              <input type="text" id="aCity" class="input-3d" placeholder="e.g. Bengaluru">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="aState">State / Province</label>
+              <input type="text" id="aState" class="input-3d" placeholder="e.g. Karnataka">
+            </div>
+          </div>
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="aZip">PIN / Postal Code</label>
+              <input type="text" id="aZip" class="input-3d" placeholder="e.g. 560100">
+              <span class="validation-hint" id="aZipHint"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="aCountry">Country</label>
+              <input type="text" id="aCountry" class="input-3d" placeholder="e.g. India">
+            </div>
+          </div>
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="form-label" for="aFullAddress" style="margin-bottom:0;">Combined Full Address</label>
+              <button id="autoFormatAddressBtn" type="button" class="btn-3d btn-secondary btn-sm" style="padding:2px 8px; font-size:10px;">⚡ Auto-Sync</button>
+            </div>
+            <textarea id="aFullAddress" class="input-3d" style="min-height:55px; margin-top:4px;" placeholder="Flat 4B, 123 Innovation Way, Bengaluru, Karnataka, 560100, India"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Professional Tab -->
+      <section id="tab-professional" class="tab-panel">
+        <div class="glass-card-3d">
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label" for="prJobTitle">Job Title</label>
+              <input type="text" id="prJobTitle" class="input-3d" placeholder="Senior AI Engineer">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="prCompany">Company</label>
+              <input type="text" id="prCompany" class="input-3d" placeholder="TechCorp Global">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prLinkedIn">LinkedIn URL</label>
+            <input type="url" id="prLinkedIn" class="input-3d" placeholder="https://linkedin.com/in/username">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prGithub">Portfolio / GitHub</label>
+            <input type="url" id="prGithub" class="input-3d" placeholder="https://github.com/username">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prSkills">Key Skills</label>
+            <input type="text" id="prSkills" class="input-3d" placeholder="JavaScript, React, Python, UI/UX">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prBio">Resume Summary / Bio</label>
+            <textarea id="prBio" class="input-3d" placeholder="Experienced engineer specializing in cloud architecture and intelligent interfaces..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Documents & Files Tab -->
+      <section id="tab-documents" class="tab-panel">
+        <!-- Drag & Drop Uploader -->
+        <div class="uploader-dropzone glass-card-3d" id="dropzone">
+          <input type="file" id="docFileInput" accept="application/pdf,image/png,image/jpeg" style="display:none;">
+          <div class="dropzone-content">
+            <div class="upload-icon-circle">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <p class="dropzone-title">Drag & drop or <span class="highlight">browse</span></p>
+            <p class="dropzone-sub">PDF, PNG, JPG • Auto-compressed &lt;300 KB</p>
+          </div>
+        </div>
+
+        <!-- Add Document Meta Form -->
+        <div class="glass-card-3d doc-meta-form" id="docMetaForm" style="display:none;">
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label class="form-label">Doc Type</label>
+              <select id="newDocType" class="input-3d">
+                <option value="Aadhaar">Aadhaar Card</option>
+                <option value="PAN">PAN Card</option>
+                <option value="Passport">Passport</option>
+                <option value="Driver License">Driver's License</option>
+                <option value="SSN">SSN / National ID</option>
+                <option value="Resume">Resume / CV</option>
+                <option value="Other">Other Document</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Doc Name</label>
+              <input type="text" id="newDocName" class="input-3d" placeholder="e.g. My Passport">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Document Number (Optional)</label>
+            <input type="text" id="newDocNumber" class="input-3d" placeholder="e.g. A12345678">
+          </div>
+          <div class="doc-actions-row">
+            <button id="cancelDocBtn" class="btn-3d btn-secondary">Cancel</button>
+            <button id="saveDocBtn" class="btn-3d btn-emerald">Save & Compress</button>
+          </div>
+        </div>
+
+        <!-- Documents List -->
+        <div class="docs-list-container" id="docsList">
+          <!-- Dynamically populated document cards -->
+        </div>
+      </section>
+
+      <!-- Custom Fields Tab -->
+      <section id="tab-custom" class="tab-panel">
+        <div class="custom-header-row">
+          <p class="section-desc">Create custom key-value aliases for unique form fields.</p>
+          <button id="addCustomFieldBtn" class="btn-3d btn-primary btn-sm">+ Add Field</button>
+        </div>
+        <div id="customFieldsList" class="custom-fields-list">
+          <!-- Dynamically injected custom fields -->
+        </div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section id="tab-settings" class="tab-panel">
+        <!-- Quick Demo Loader -->
+        <div class="glass-card-3d settings-group">
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">✨ Preload Demo Profile</span>
+              <span class="setting-desc">Instantly populate profile & ID cards for 1-click test</span>
+            </div>
+            <button id="loadDemoDataBtn" class="btn-3d btn-emerald btn-sm">Load Demo Data</button>
+          </div>
+        </div>
+
+        <div class="glass-card-3d settings-group">
+          <!-- Theme Switcher -->
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Dark / Light Mode</span>
+              <span class="setting-desc">Switch between Cyber Obsidian and Clean Frost</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="themeToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Floating Badge Switcher -->
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Floating Quick-Badge</span>
+              <span class="setting-desc">Show 3D SmartFill helper badge on input fields</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="floatingBadgeToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- PIN Security -->
+          <div class="setting-item">
+            <div class="setting-info">
+              <span class="setting-title">Vault PIN Lock</span>
+              <span class="setting-desc">Require 4-digit PIN to view and edit saved data</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pinProtectionToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div id="pinConfigActions" style="display:none; margin-top: 8px;">
+            <button id="changePinBtn" class="btn-3d btn-secondary btn-sm">Change PIN</button>
+          </div>
+        </div>
+
+        <!-- Data Management & Backups -->
+        <div class="glass-card-3d settings-group">
+          <span class="setting-title">Data & Storage Management</span>
+          <div class="settings-btn-grid">
+            <button id="exportBackupBtn" class="btn-3d btn-secondary">
+              📥 Export Backup (JSON)
+            </button>
+            <button id="importBackupBtn" class="btn-3d btn-secondary">
+              📤 Import Backup
+            </button>
+            <input type="file" id="importFileInput" accept=".json" style="display:none;">
+            <button id="openOptionsBtn" class="btn-3d btn-secondary">
+              🖥️ Full-Screen Dashboard
+            </button>
+            <button id="clearDataBtn" class="btn-3d btn-danger">
+              🗑️ Reset All Data
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Controls (Save Changes & Status Feedback) -->
+    <footer class="footer-bar glass-panel">
+      <div id="toastNotification" class="toast-bar">Saved successfully!</div>
+      <div class="footer-actions">
+        <button id="saveAllBtn" class="btn-3d btn-primary save-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Changes
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 3D PIN Modal Overlay -->
+  <div class="modal-overlay" id="pinModal">
+    <div class="modal-card-3d" id="pinModalCard">
+      <div class="pin-modal-header">
+        <div class="pin-shield-icon">🛡️</div>
+        <h3 id="pinModalTitle">Enter Security PIN</h3>
+        <p id="pinModalSubtitle">Unlock your vault to view and modify your private data</p>
+      </div>
+      <div class="pin-inputs-container">
+        <input type="password" maxlength="1" class="pin-digit-box" data-index="0" autofocus>
+        <input type="password" maxlength="1" class="pin-digit-box" data-index="1">
+        <input type="password" maxlength="1" class="pin-digit-box" data-index="2">
+        <input type="password" maxlength="1" class="pin-digit-box" data-index="3">
+      </div>
+      <p class="pin-error-msg" id="pinErrorMsg"></p>
+      <div class="modal-actions">
+        <button id="cancelPinBtn" class="btn-3d btn-secondary">Cancel</button>
+        <button id="submitPinBtn" class="btn-3d btn-primary">Unlock Vault</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../utils/validator.js"></script>
+  <script src="../utils/crypto.js"></script>
+  <script src="../utils/fileHandler.js"></script>
+  <script src="../utils/fieldMatcher.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

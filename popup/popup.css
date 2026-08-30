@@ -1,0 +1,468 @@
+/* ===================================================================
+   SmartFill AI Assistant — Popup Specific Styles (popup.css)
+   =================================================================== */
+
+html, body {
+  width: 420px;
+  max-width: 420px;
+  min-height: 580px;
+  max-height: 620px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  padding: 12px;
+  gap: 10px;
+  background: var(--bg-gradient);
+  background-color: var(--bg-base);
+  box-sizing: border-box;
+}
+
+/* ===================================================================
+   Header Card
+   =================================================================== */
+.header-card {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface-1);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--depth-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.greeting-text {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.subtitle-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Storage Widget */
+.storage-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: var(--radius-xs);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--glass-border);
+}
+
+.storage-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.storage-value {
+  color: var(--primary-start);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Header Action Buttons */
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.fill-btn {
+  flex: 1;
+  font-size: 13px;
+  padding: 9px 12px;
+}
+
+.lock-btn {
+  padding: 9px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ===================================================================
+   Tab Navigation Strip
+   =================================================================== */
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-1);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+  color: #ffffff;
+  background: var(--primary-gradient);
+  box-shadow: 0 2px 8px rgba(0, 210, 255, 0.35);
+}
+
+/* ===================================================================
+   Tab Panels Container
+   =================================================================== */
+.tab-content-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 2px;
+  min-height: 0;
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* ===================================================================
+   Documents Tab & Dropzone
+   =================================================================== */
+.uploader-dropzone {
+  border: 2px dashed rgba(0, 210, 255, 0.3);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  margin-bottom: 10px;
+}
+
+.uploader-dropzone:hover, .uploader-dropzone.dragover {
+  border-color: var(--primary-start);
+  background: rgba(0, 210, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.upload-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px auto;
+  color: var(--primary-start);
+}
+
+.dropzone-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dropzone-title .highlight {
+  color: var(--primary-start);
+  text-decoration: underline;
+}
+
+.dropzone-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.doc-meta-form {
+  margin-bottom: 10px;
+  padding: 12px;
+}
+
+.doc-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.docs-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--depth-sm);
+  transition: all var(--transition-fast);
+}
+
+.doc-item-card:hover {
+  border-color: var(--glass-border-hover);
+  transform: translateY(-1px);
+}
+
+.doc-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doc-item-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.doc-item-num {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.doc-item-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* ===================================================================
+   Custom Fields Tab
+   =================================================================== */
+.custom-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.section-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 260px;
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 11px;
+}
+
+.custom-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-field-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-field-row .key-input {
+  flex: 1;
+}
+
+.custom-field-row .val-input {
+  flex: 1.5;
+}
+
+/* ===================================================================
+   Settings Tab
+   =================================================================== */
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.setting-desc {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.settings-btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ===================================================================
+   Footer Bar & Toast
+   =================================================================== */
+.footer-bar {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-1);
+}
+
+.toast-bar {
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all var(--transition-fast);
+}
+
+.toast-bar.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.save-btn {
+  padding: 7px 16px;
+  font-size: 12px;
+}
+
+/* ===================================================================
+   PIN Modal Details
+   =================================================================== */
+.pin-shield-icon {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.pin-modal-header h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.pin-modal-header p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.pin-error-msg {
+  color: #f43f5e;
+  font-size: 11.5px;
+  font-weight: 600;
+  min-height: 18px;
+  margin-bottom: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Locked Mode State */
+body.vault-locked input:not(.pin-digit-box),
+body.vault-locked select,
+body.vault-locked textarea,
+body.vault-locked #docFileInput,
+body.vault-locked #dropzone,
+body.vault-locked #saveAllBtn {
+  pointer-events: none !important;
+  opacity: 0.55 !important;
+}
+
+body.vault-locked .masked-num {
+  filter: blur(4px);
+  user-select: none;
+}

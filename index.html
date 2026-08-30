@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFill AI Assistant — Next-Gen 3D Autofill Chrome Extension</title>
+  <meta name="description" content="Intelligent 3D Glassmorphic form-filling assistant with client-side document compression & secure cryptographic PIN vault for Google Chrome.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/3d-theme.css">
+  <style>
+    :root {
+      --hero-glow: radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.15), rgba(112, 0, 255, 0.12) 40%, transparent 70%);
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      background-image: var(--bg-mesh), var(--hero-glow);
+      color: var(--text-primary);
+      font-family: 'Outfit', -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10, 14, 26, 0.75);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 19px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo svg {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6));
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color var(--transition-fast);
+    }
+    .nav-link:hover {
+      color: var(--primary-cyan);
+    }
+
+    /* Container */
+    .landing-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 40px 0 60px 0;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(0, 210, 255, 0.1);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      color: var(--primary-cyan);
+      font-size: 12.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 6vw, 62px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin: 0 auto 20px auto;
+      max-width: 900px;
+    }
+
+    .hero-title span {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto 34px auto;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-download-hero {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    /* Interactive Demo Player Box */
+    .demo-player-container {
+      margin: 50px auto;
+      max-width: 960px;
+      border-radius: var(--radius-xl);
+      background: var(--surface-1);
+      border: 1px solid var(--glass-border-hover);
+      box-shadow: var(--depth-lg), 0 0 50px rgba(0, 210, 255, 0.15);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .demo-browser-bar {
+      background: rgba(10, 14, 26, 0.9);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 7px;
+    }
+    .browser-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .browser-address-bar {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .demo-tabs-bar {
+      display: flex;
+      background: rgba(15, 23, 42, 0.6);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 6px 12px 0 12px;
+      gap: 8px;
+    }
+
+    .demo-tab-item {
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .demo-tab-item.active {
+      background: var(--surface-2);
+      color: var(--primary-cyan);
+      border-color: var(--glass-border);
+    }
+
+    /* Simulation Stage */
+    .demo-stage {
+      padding: 30px;
+      min-height: 420px;
+      position: relative;
+      background: radial-gradient(circle at top right, rgba(0, 210, 255, 0.06), transparent 50%);
+    }
+
+    .stage-form {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .sim-field {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .sim-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .sim-input-wrapper {
+      position: relative;
+    }
+
+    .sim-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 16px;
+      font-size: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sim-input.sim-active {
+      border-color: var(--primary-cyan);
+      box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+    }
+
+    .sim-input.sim-filled {
+      border-color: #10B981;
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Floating 3D Simulated Badge */
+    .sim-floating-badge {
+      position: absolute;
+      top: -14px;
+      right: 14px;
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.95), rgba(112, 0, 255, 0.95));
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.6);
+      transform: scale(0);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .sim-floating-badge.visible {
+      transform: scale(1);
+      opacity: 1;
+      animation: pulseGlow 1.8s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 4px 15px rgba(0, 210, 255, 0.6); }
+      50% { box-shadow: 0 6px 25px rgba(0, 210, 255, 0.9), 0 0 30px rgba(112, 0, 255, 0.7); }
+    }
+
+    .sim-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Steps Grid */
+    .steps-section {
+      margin: 80px 0;
+      text-align: center;
+    }
+
+    .section-headline {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      text-align: left;
+    }
+
+    .step-card {
+      background: var(--surface-1);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-normal);
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-cyan);
+      box-shadow: var(--depth-md), 0 0 25px rgba(0, 210, 255, 0.15);
+    }
+
+    .step-number {
+      font-size: 44px;
+      font-weight: 900;
+      color: rgba(0, 210, 255, 0.2);
+      line-height: 1;
+      margin-bottom: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .step-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .step-code {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: var(--radius-xs);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--primary-cyan);
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: var(--surface-1);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      transition: all var(--transition-fast);
+    }
+    .feature-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .feature-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <a href="#" class="brand-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2.5">
+        <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
+      </svg>
+      <span>SmartFill AI</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#demo" class="nav-link">Interactive Demo</a>
+      <a href="#install" class="nav-link">Install Guide</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="test-form.html" target="_blank" class="nav-link">🧪 Sandbox</a>
+      <a href="smartfill-ai-assistant.zip" download="smartfill-ai-assistant.zip" class="btn-3d btn-primary" style="padding:8px 16px; font-size:13px;">
+        ⬇️ Download ZIP
+      </a>
+    </nav>
+  </header>
+
+  <div class="landing-container">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-badge">⚡ Manifest V3 • 100% Offline & Private</div>
+      <h1 class="hero-title">Intelligent 3D Autofill for <span>Every Webpage</span></h1>
+      <p class="hero-subtitle">
+        Securely store your personal details, structured address, and identity documents in an encrypted vault. Fill Google Forms, job portals, and checkouts with a single click.
+      </p>
+
+      <div class="hero-actions">
+        <a href="smartfill-ai-assistant.zip" download="smartfill-ai-assistant.zip" class="btn-3d btn-primary btn-download-hero">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Download Extension (.zip)
+        </a>
+        <a href="#demo" class="btn-3d btn-secondary" style="padding:14px 24px; font-size:16px; font-weight:700; text-decoration:none;">
+          ▶ Watch AI Demo
+        </a>
+      </div>
+    </section>
+
+    <!-- Interactive AI Generated Video & Simulation Demo -->
+    <section id="demo" style="scroll-margin-top: 80px;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <h2 class="section-headline">Interactive Live Demo Simulation</h2>
+        <p class="section-desc">Watch SmartFill identify, match, and autofill complex forms with zero placeholder overlap in real time.</p>
+      </div>
+
+      <div class="demo-player-container">
+        <!-- Mock Browser Window -->
+        <div class="demo-browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-address-bar">
+            🔒 <span id="demoUrlText">https://docs.google.com/forms/d/sunbeam-rsvp/viewform</span>
+          </div>
+          <div style="font-size:13px; font-weight:700; color:var(--primary-cyan);">
+            ⚡ SmartFill Active
+          </div>
+        </div>
+
+        <!-- Demo Category Switcher -->
+        <div class="demo-tabs-bar">
+          <div class="demo-tab-item active" data-scenario="gform">📝 Google Forms RSVP</div>
+          <div class="demo-tab-item" data-scenario="job">💼 Workday Job Portal</div>
+          <div class="demo-tab-item" data-scenario="checkout">🛍️ E-Commerce Checkout</div>
+        </div>
+
+        <!-- Simulation Stage -->
+        <div class="demo-stage">
+          <div class="stage-form" id="simFormContainer">
+            
+            <!-- Field 1 -->
+            <div class="sim-field">
+              <label class="sim-label" id="simLabel1">Full Name *</label>
+              <div class="sim-input-wrapper">
+                <input type="text" class="sim-input" id="simInput1" placeholder="Your answer" readonly>
+                <div class="sim-floating-badge" id="simBadge1">
+                  ⚡ SmartFill
+                </div>
+              </div>
+            </div>
+
+            <!-- Field 2 -->
+            <div class="sim-field">
+              <label class="sim-label" id="simLabel2">Email Address *</label>
+              <div class="sim-input-wrapper">
+                <input type="text" class="sim-input" id="simInput2" placeholder="Your answer" readonly>
+                <div class="sim-floating-badge" id="simBadge2">
+                  ⚡ SmartFill
+                </div>
+              </div>
+            </div>
+
+            <!-- Field 3 -->
+            <div class="sim-field">
+              <label class="sim-label" id="simLabel3">Contact Number *</label>
+              <div class="sim-input-wrapper">
+                <input type="text" class="sim-input" id="simInput3" placeholder="Your answer" readonly>
+                <div class="sim-floating-badge" id="simBadge3">
+                  ⚡ SmartFill
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="sim-controls">
+            <button id="simPlayBtn" class="btn-3d btn-primary btn-sm">▶ Replay Simulation</button>
+            <span id="simStatusText" style="font-size:12.5px; color:var(--text-secondary);">Simulating user interaction...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation Steps Section -->
+    <section id="install" class="steps-section" style="scroll-margin-top: 80px;">
+      <h2 class="section-headline">Install in 30 Seconds</h2>
+      <p class="section-desc">No build tools or command line required. Works in Chrome, Brave, Edge, and Arc.</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 class="step-title">Download & Unzip</h3>
+          <p class="step-text">Click the download button to get the extension package and extract it to a folder on your computer.</p>
+          <a href="smartfill-ai-assistant.zip" download="smartfill-ai-assistant.zip" class="step-code" style="text-decoration:none; display:inline-block;">⬇️ smartfill-ai-assistant.zip</a>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 class="step-title">Open Chrome Extensions</h3>
+          <p class="step-text">Open Google Chrome and navigate to the extensions management console:</p>
+          <span class="step-code">chrome://extensions</span>
+          <p class="step-text" style="margin-top:8px;">Toggle <strong>"Developer mode"</strong> in the top-right corner.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 class="step-title">Load Unpacked</h3>
+          <p class="step-text">Click the <strong>"Load unpacked"</strong> button in the top-left corner and select the extracted folder.</p>
+          <span class="step-code">✓ SmartFill Vault Active</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" style="margin: 80px 0; scroll-margin-top: 80px;">
+      <div style="text-align:center;">
+        <h2 class="section-headline">Engineered for Precision & Security</h2>
+        <p class="section-desc">Full privacy, zero remote servers, and client-side cryptography.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-title">Web Crypto PBKDF2 Vault</h3>
+          <p class="feature-desc">100,000 iterations PBKDF2-HMAC-SHA256 4-digit PIN lock. Your sensitive records are protected against unauthorized access.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Universal DOM Matcher</h3>
+          <p class="feature-desc">Fuzzy token dictionary and parent card traversal effortlessly matches Google Forms, React, Vue, Workday, and Shopify forms.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📍</div>
+          <h3 class="feature-title">Structured Address & Auto-Sync</h3>
+          <p class="feature-desc">Separate House No, Street, City, State, PIN Code, and Country fields with 1-click Auto-Sync for single multiline address boxes.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🖼️</div>
+          <h3 class="feature-title">Canvas File Compressor</h3>
+          <p class="feature-desc">Client-side progressive Canvas compression automatically scales PDF & image documents to <300 KB to respect quota limits.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Zero Placeholder Overlap</h3>
+          <p class="feature-desc">Synthesizes native event lifecycles and Material Design state switches so floating "Your answer" labels hide smoothly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⌨️</div>
+          <h3 class="feature-title">Global Shortcut & Context Menu</h3>
+          <p class="feature-desc">Press <kbd style="background:rgba(0,0,0,0.4); padding:2px 6px; border-radius:4px; font-size:11px;">Alt + Shift + F</kbd> or right-click any field to autofill immediately without opening the popup.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>SmartFill AI Assistant • Manifest V3 Google Chrome Extension • 100% Client-Side Privacy</p>
+  </footer>
+
+  <!-- Simulation Script -->
+  <script>
+    const scenarios = {
+      gform: {
+        url: 'https://docs.google.com/forms/d/sunbeam-rsvp/viewform',
+        f1: { label: 'Full Name *', value: 'Ansh Goyal' },
+        f2: { label: 'Email Address(You Used to Fill The Form) *', value: 'ansh.26bcs10099@sst.scaler.com' },
+        f3: { label: 'Contact Number *', value: '9950510357' }
+      },
+      job: {
+        url: 'https://workday.com/careers/senior-engineer/apply',
+        f1: { label: 'Candidate Full Name', value: 'Ansh Goyal' },
+        f2: { label: 'Work Email Address', value: 'ansh.26bcs10099@sst.scaler.com' },
+        f3: { label: 'Mobile / Phone', value: '+91 9950510357' }
+      },
+      checkout: {
+        url: 'https://checkout.shopify.com/pay/order-8921',
+        f1: { label: 'Recipient Name', value: 'Ansh Goyal' },
+        f2: { label: 'Billing Email', value: 'ansh.26bcs10099@sst.scaler.com' },
+        f3: { label: 'Phone Number', value: '+91 9950510357' }
+      }
+    };
+
+    let currentScenario = 'gform';
+    let simTimeout = null;
+
+    const demoUrlText = document.getElementById('demoUrlText');
+    const simLabel1 = document.getElementById('simLabel1');
+    const simLabel2 = document.getElementById('simLabel2');
+    const simLabel3 = document.getElementById('simLabel3');
+    const simInput1 = document.getElementById('simInput1');
+    const simInput2 = document.getElementById('simInput2');
+    const simInput3 = document.getElementById('simInput3');
+    const simBadge1 = document.getElementById('simBadge1');
+    const simBadge2 = document.getElementById('simBadge2');
+    const simBadge3 = document.getElementById('simBadge3');
+    const simPlayBtn = document.getElementById('simPlayBtn');
+    const simStatusText = document.getElementById('simStatusText');
+    const demoTabItems = document.querySelectorAll('.demo-tab-item');
+
+    function loadScenario(key) {
+      currentScenario = key;
+      const data = scenarios[key];
+      demoUrlText.textContent = data.url;
+      simLabel1.textContent = data.f1.label;
+      simLabel2.textContent = data.f2.label;
+      simLabel3.textContent = data.f3.label;
+      resetSimulation();
+      runSimulation();
+    }
+
+    demoTabItems.forEach(tab => {
+      tab.addEventListener('click', () => {
+        demoTabItems.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        loadScenario(tab.getAttribute('data-scenario'));
+      });
+    });
+
+    function resetSimulation() {
+      if (simTimeout) clearTimeout(simTimeout);
+      [simInput1, simInput2, simInput3].forEach(input => {
+        input.value = '';
+        input.classList.remove('sim-active', 'sim-filled');
+      });
+      [simBadge1, simBadge2, simBadge3].forEach(badge => {
+        badge.classList.remove('visible');
+      });
+    }
+
+    function typeWriter(element, text, callback) {
+      let i = 0;
+      element.value = '';
+      element.classList.add('sim-active');
+      const interval = setInterval(() => {
+        element.value += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          element.classList.remove('sim-active');
+          element.classList.add('sim-filled');
+          if (callback) callback();
+        }
+      }, 45);
+    }
+
+    function runSimulation() {
+      resetSimulation();
+      const data = scenarios[currentScenario];
+      simStatusText.textContent = '1. User focuses field...';
+
+      // Step 1: Focus input 1 & reveal badge
+      simTimeout = setTimeout(() => {
+        simInput1.classList.add('sim-active');
+        simBadge1.classList.add('visible');
+        simStatusText.textContent = '2. SmartFill 3D badge detects field matching...';
+
+        // Step 2: Click badge & fill Field 1
+        simTimeout = setTimeout(() => {
+          simBadge1.classList.remove('visible');
+          typeWriter(simInput1, data.f1.value, () => {
+            simStatusText.textContent = '3. Autofilling remaining fields across page...';
+
+            // Step 3: Fill Field 2
+            simTimeout = setTimeout(() => {
+              typeWriter(simInput2, data.f2.value, () => {
+                
+                // Step 4: Fill Field 3
+                simTimeout = setTimeout(() => {
+                  typeWriter(simInput3, data.f3.value, () => {
+                    simStatusText.textContent = '✨ 100% Autofill Complete with zero placeholder overlap!';
+                  });
+                }, 300);
+              });
+            }, 300);
+          });
+        }, 1000);
+      }, 600);
+    }
+
+    simPlayBtn.addEventListener('click', runSimulation);
+
+    // Run simulation on start
+    runSimulation();
+  </script>
+</body>
+</html>

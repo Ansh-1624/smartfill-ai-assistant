@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFill AI Assistant — Control Hub</title>
+  <link rel="stylesheet" href="../styles/3d-theme.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="options-sidebar glass-panel">
+      <div class="brand-header">
+        <img src="../icons/icon-48.png" alt="SmartFill" class="brand-logo">
+        <div>
+          <h2>SmartFill AI</h2>
+          <span class="badge-tag">Vault Pro</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-section="overview">
+          <span class="icon">📊</span> Overview & Quota
+        </button>
+        <button class="nav-item" data-section="profile">
+          <span class="icon">👤</span> Profile & Address
+        </button>
+        <button class="nav-item" data-section="professional">
+          <span class="icon">💼</span> Professional & Bio
+        </button>
+        <button class="nav-item" data-section="documents">
+          <span class="icon">📁</span> Document Vault
+        </button>
+        <button class="nav-item" data-section="custom">
+          <span class="icon">🏷️</span> Custom Aliases
+        </button>
+        <button class="nav-item" data-section="security">
+          <span class="icon">🛡️</span> Security & Backups
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="lock-indicator" id="sidebarLockStatus">
+          <span class="lock-icon">🔒</span>
+          <span id="sidebarLockText">Vault Locked</span>
+        </div>
+        <button id="sidebarUnlockBtn" class="btn-3d btn-primary btn-sm">Unlock to Edit</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="options-main">
+      <header class="main-topbar glass-panel">
+        <div>
+          <h1 id="pageSectionTitle">Overview & Storage Quota</h1>
+          <p class="section-subtitle">Manage your local autofill records and encrypted identity documents</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="optSaveBtn" class="btn-3d btn-primary">
+            💾 Save All Changes
+          </button>
+        </div>
+      </header>
+
+      <div class="content-scroll-area">
+        
+        <!-- SECTION: Overview & Quota -->
+        <section id="sec-overview" class="content-section active">
+          <div class="stats-grid">
+            <div class="glass-card-3d stat-card">
+              <span class="stat-icon">💾</span>
+              <div class="stat-info">
+                <span class="stat-title">Storage Used</span>
+                <h3 id="statStorageText">0.0 MB / 10 MB</h3>
+                <div class="meter-wrapper" style="margin-top:6px;">
+                  <div class="meter-fill" id="optStorageMeterFill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card-3d stat-card">
+              <span class="stat-icon">📄</span>
+              <div class="stat-info">
+                <span class="stat-title">Stored Documents</span>
+                <h3 id="statDocsCount">0 Documents</h3>
+                <span class="stat-sub">Auto-compressed &lt; 300KB</span>
+              </div>
+            </div>
+
+            <div class="glass-card-3d stat-card">
+              <span class="stat-icon">🏷️</span>
+              <div class="stat-info">
+                <span class="stat-title">Custom Aliases</span>
+                <h3 id="statAliasesCount">0 Aliases</h3>
+                <span class="stat-sub">Smart regex matched</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card-3d" style="margin-top: 16px;">
+            <h3>Quick Start & Testing</h3>
+            <p style="color:var(--text-secondary); margin: 8px 0 16px 0; font-size: 13px;">
+              SmartFill AI automatically recognizes form inputs across React, Vue, Angular, and HTML5 standard forms. Use the test sandbox page to verify field injections and document number lookups.
+            </p>
+            <div style="display:flex; gap:10px;">
+              <a href="../test-form.html" target="_blank" class="btn-3d btn-secondary">
+                🧪 Open Test Sandbox Form
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION: Profile & Address -->
+        <section id="sec-profile" class="content-section">
+          <div class="section-cards-grid">
+            <div class="glass-card-3d">
+              <h3 style="margin-bottom:12px;">Personal Information</h3>
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="optFullName" class="input-3d" placeholder="Alex Morgan">
+              </div>
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" id="optFirstName" class="input-3d" placeholder="Alex">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" id="optLastName" class="input-3d" placeholder="Morgan">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" id="optEmail" class="input-3d" placeholder="alex@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="optPhone" class="input-3d" placeholder="+1 555-0199">
+              </div>
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label class="form-label">Date of Birth</label>
+                  <input type="date" id="optDob" class="input-3d">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Gender</label>
+                  <select id="optGender" class="input-3d">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-card-3d">
+              <h3 style="margin-bottom:12px;">Residential Address</h3>
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label class="form-label">House / Flat / Bldg No.</label>
+                  <input type="text" id="optFlatNo" class="input-3d" placeholder="Flat 4B, Tower 2">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Street / Locality</label>
+                  <input type="text" id="optStreet" class="input-3d" placeholder="123 Innovation Way">
+                </div>
+              </div>
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label class="form-label">City / Town</label>
+                  <input type="text" id="optCity" class="input-3d" placeholder="Bengaluru">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">State / Province</label>
+                  <input type="text" id="optState" class="input-3d" placeholder="Karnataka">
+                </div>
+              </div>
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label class="form-label">PIN / Postal Code</label>
+                  <input type="text" id="optZip" class="input-3d" placeholder="560100">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Country</label>
+                  <input type="text" id="optCountry" class="input-3d" placeholder="India">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Combined Full Address (for single address boxes)</label>
+                <textarea id="optFullAddress" class="input-3d" style="min-height:55px;" placeholder="Flat 4B, Tower 2, 123 Innovation Way, Bengaluru, Karnataka, 560100, India"></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION: Professional -->
+        <section id="sec-professional" class="content-section">
+          <div class="glass-card-3d">
+            <h3 style="margin-bottom:14px;">Career & Online Presence</h3>
+            <div class="grid-2-col">
+              <div class="form-group">
+                <label class="form-label">Job Title</label>
+                <input type="text" id="optJobTitle" class="input-3d" placeholder="Staff Software Architect">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company</label>
+                <input type="text" id="optCompany" class="input-3d" placeholder="Acme Systems">
+              </div>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-group">
+                <label class="form-label">LinkedIn Profile URL</label>
+                <input type="url" id="optLinkedIn" class="input-3d" placeholder="https://linkedin.com/in/alex">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Portfolio / GitHub URL</label>
+                <input type="url" id="optGithub" class="input-3d" placeholder="https://github.com/alex">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Skills / Technologies</label>
+              <input type="text" id="optSkills" class="input-3d" placeholder="JavaScript, Python, React, AWS, Node.js">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio / Profile Summary</label>
+              <textarea id="optBio" class="input-3d" style="min-height:100px;" placeholder="Summarize your experience, achievements, and career focus..."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION: Documents -->
+        <section id="sec-documents" class="content-section">
+          <div class="glass-card-3d" style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3>Upload New Identity / Verification Document</h3>
+                <p style="font-size:12px; color:var(--text-muted);">PDF or Images • Canvas auto-compression ensures &lt;300 KB file footprint</p>
+              </div>
+              <button id="optUploadTriggerBtn" class="btn-3d btn-primary">+ Upload Document</button>
+              <input type="file" id="optFileInput" accept="application/pdf,image/png,image/jpeg" style="display:none;">
+            </div>
+          </div>
+
+          <div id="optDocsGrid" class="docs-expanded-grid">
+            <!-- Dynamically populated document cards -->
+          </div>
+        </section>
+
+        <!-- SECTION: Custom Aliases -->
+        <section id="sec-custom" class="content-section">
+          <div class="glass-card-3d">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div>
+                <h3>Dynamic Field Aliases</h3>
+                <p style="font-size:12px; color:var(--text-muted);">Define custom aliases for proprietary forms (e.g. "Voter ID", "Discord Tag", "Discord #", "Tax Number")</p>
+              </div>
+              <button id="optAddAliasBtn" class="btn-3d btn-primary">+ Add Alias</button>
+            </div>
+            <div id="optCustomList" class="custom-fields-list"></div>
+          </div>
+        </section>
+
+        <!-- SECTION: Security & Backups -->
+        <section id="sec-security" class="content-section">
+          <div class="glass-card-3d" style="margin-bottom:16px;">
+            <h3>Cryptographic PIN Protection</h3>
+            <p style="font-size:12px; color:var(--text-secondary); margin:6px 0 14px 0;">
+              Protect your personal information using Web Crypto PBKDF2 with SHA-256 (100,000 iterations). When enabled, all editing and sensitive document previews require PIN authorization.
+            </p>
+            <div class="setting-item">
+              <span class="setting-title">Enable 4-Digit Vault PIN</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="optPinToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div id="optPinActions" style="margin-top:12px; display:none;">
+              <button id="optChangePinBtn" class="btn-3d btn-secondary">Change Security PIN</button>
+            </div>
+          </div>
+
+          <div class="glass-card-3d">
+            <h3>Backup, Restore & Reset</h3>
+            <p style="font-size:12px; color:var(--text-secondary); margin:6px 0 14px 0;">
+              Export your encrypted dataset to an offline JSON file for migration or cold storage.
+            </p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button id="optExportBtn" class="btn-3d btn-secondary">📥 Export Backup (JSON)</button>
+              <button id="optImportBtn" class="btn-3d btn-secondary">📤 Import Backup</button>
+              <input type="file" id="optImportFile" accept=".json" style="display:none;">
+              <button id="optResetBtn" class="btn-3d btn-danger">🗑️ Erase All Data</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Document Preview Modal -->
+  <div class="modal-overlay" id="docPreviewModal">
+    <div class="modal-card-3d preview-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="previewDocTitle">Document Preview</h3>
+        <button id="closeDocPreviewBtn" class="btn-icon">✕</button>
+      </div>
+      <div id="previewFrameContainer" class="preview-frame-container"></div>
+    </div>
+  </div>
+
+  <!-- 3D PIN Modal Overlay -->
+  <div class="modal-overlay" id="optPinModal">
+    <div class="modal-card-3d">
+      <div class="pin-modal-header">
+        <div class="pin-shield-icon">🛡️</div>
+        <h3 id="optPinModalTitle">Enter Security PIN</h3>
+        <p id="optPinModalSubtitle">Unlock your vault to edit profile records</p>
+      </div>
+      <div class="pin-inputs-container">
+        <input type="password" maxlength="1" class="pin-digit-box" data-opt-pin="0">
+        <input type="password" maxlength="1" class="pin-digit-box" data-opt-pin="1">
+        <input type="password" maxlength="1" class="pin-digit-box" data-opt-pin="2">
+        <input type="password" maxlength="1" class="pin-digit-box" data-opt-pin="3">
+      </div>
+      <p class="pin-error-msg" id="optPinErrorMsg"></p>
+      <div class="modal-actions">
+        <button id="optCancelPinBtn" class="btn-3d btn-secondary">Cancel</button>
+        <button id="optSubmitPinBtn" class="btn-3d btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="optToast" class="toast-bar">Changes saved!</div>
+
+  <script src="../utils/validator.js"></script>
+  <script src="../utils/crypto.js"></script>
+  <script src="../utils/fileHandler.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
