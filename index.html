@@ -87,7 +87,7 @@
     /* Hero Section */
     .hero-section {
       text-align: center;
-      padding: 40px 0 60px 0;
+      padding: 40px 0 50px 0;
       position: relative;
     }
 
@@ -148,186 +148,178 @@
       text-decoration: none;
     }
 
-    /* Interactive Demo Player Box */
-    .demo-player-container {
-      margin: 50px auto;
-      max-width: 960px;
+    /* Video Player Box */
+    .video-guide-wrapper {
+      margin: 50px auto 80px auto;
+      max-width: 1000px;
       border-radius: var(--radius-xl);
       background: var(--surface-1);
       border: 1px solid var(--glass-border-hover);
-      box-shadow: var(--depth-lg), 0 0 50px rgba(0, 210, 255, 0.15);
+      box-shadow: var(--depth-lg), 0 0 60px rgba(0, 210, 255, 0.15);
       overflow: hidden;
       position: relative;
     }
 
-    .demo-browser-bar {
-      background: rgba(10, 14, 26, 0.9);
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .video-top-banner {
+      width: 100%;
+      height: auto;
+      max-height: 380px;
+      object-fit: cover;
+      display: block;
       border-bottom: 1px solid var(--glass-border);
     }
 
-    .browser-dots {
-      display: flex;
-      gap: 7px;
+    .video-timeline-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: rgba(10, 14, 26, 0.95);
+      border-bottom: 1px solid var(--glass-border);
     }
-    .browser-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-    }
-    .dot-red { background: #ff5f56; }
-    .dot-yellow { background: #ffbd2e; }
-    .dot-green { background: #27c93f; }
 
-    .browser-address-bar {
-      flex: 1;
-      max-width: 500px;
-      margin: 0 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 12px;
+    .timeline-step-btn {
+      padding: 14px 10px;
+      text-align: center;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .demo-tabs-bar {
-      display: flex;
-      background: rgba(15, 23, 42, 0.6);
-      border-bottom: 1px solid var(--glass-border);
-      padding: 6px 12px 0 12px;
-      gap: 8px;
-    }
-
-    .demo-tab-item {
-      padding: 8px 16px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
       cursor: pointer;
-      border: 1px solid transparent;
-      border-bottom: none;
-      transition: all var(--transition-fast);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .demo-tab-item.active {
-      background: var(--surface-2);
-      color: var(--primary-cyan);
-      border-color: var(--glass-border);
-    }
-
-    /* Simulation Stage */
-    .demo-stage {
-      padding: 30px;
-      min-height: 420px;
-      position: relative;
-      background: radial-gradient(circle at top right, rgba(0, 210, 255, 0.06), transparent 50%);
-    }
-
-    .stage-form {
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    .sim-field {
-      margin-bottom: 18px;
-      position: relative;
-    }
-
-    .sim-label {
+      font-family: inherit;
       font-size: 12px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .timeline-step-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .timeline-step-btn.active {
+      color: var(--primary-cyan);
+      border-bottom-color: var(--primary-cyan);
+      background: rgba(0, 210, 255, 0.08);
+    }
+
+    .timeline-step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .video-screen-stage {
+      padding: 36px 30px;
+      min-height: 420px;
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.8) 0%, rgba(10, 14, 26, 0.98) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .video-scene {
+      display: none;
+      width: 100%;
+      max-width: 680px;
+      animation: sceneFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-scene.active {
       display: block;
     }
 
-    .sim-input-wrapper {
+    @keyframes sceneFade {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .scene-card {
+      background: var(--surface-2);
+      border: 1px solid var(--glass-border-hover);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--depth-md);
       position: relative;
     }
 
-    .sim-input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px 16px;
-      font-size: 14px;
-      background: var(--surface-2);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      outline: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .sim-input.sim-active {
-      border-color: var(--primary-cyan);
-      box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
-    }
-
-    .sim-input.sim-filled {
-      border-color: #10B981;
-      background: rgba(16, 185, 129, 0.08);
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
-    }
-
-    /* Floating 3D Simulated Badge */
-    .sim-floating-badge {
-      position: absolute;
-      top: -14px;
-      right: 14px;
-      background: linear-gradient(135deg, rgba(0, 210, 255, 0.95), rgba(112, 0, 255, 0.95));
-      color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
+    .scene-header {
       display: flex;
       align-items: center;
-      gap: 5px;
-      box-shadow: 0 4px 15px rgba(0, 210, 255, 0.6);
-      transform: scale(0);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: pointer;
-      z-index: 10;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
     }
 
-    .sim-floating-badge.visible {
-      transform: scale(1);
-      opacity: 1;
-      animation: pulseGlow 1.8s infinite ease-in-out;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 4px 15px rgba(0, 210, 255, 0.6); }
-      50% { box-shadow: 0 6px 25px rgba(0, 210, 255, 0.9), 0 0 30px rgba(112, 0, 255, 0.7); }
-    }
-
-    .sim-controls {
+    .scene-title-badge {
       display: flex;
-      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .scene-badge-pill {
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 800;
+    }
+
+    .scene-visual-action {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--glass-border);
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    /* Video Player Controls Bar */
+    .video-controls-bar {
+      background: rgba(10, 14, 26, 0.95);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .video-playback-btns {
+      display: flex;
       align-items: center;
       gap: 12px;
-      margin-top: 24px;
+    }
+
+    .scrubber-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin: 0 20px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .scrubber-fill {
+      height: 100%;
+      width: 20%;
+      background: var(--primary-gradient);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
     }
 
     /* Steps Grid */
     .steps-section {
-      margin: 80px 0;
+      margin: 60px 0 80px 0;
       text-align: center;
     }
 
@@ -459,10 +451,10 @@
       <span>SmartFill AI</span>
     </a>
     <nav class="nav-links">
-      <a href="#demo" class="nav-link">Interactive Demo</a>
-      <a href="#install" class="nav-link">Install Guide</a>
+      <a href="#guide-video" class="nav-link">🎥 Video Guide</a>
+      <a href="#install" class="nav-link">Install Steps</a>
       <a href="#features" class="nav-link">Features</a>
-      <a href="test-form.html" target="_blank" class="nav-link">🧪 Sandbox</a>
+      <a href="test-form.html" target="_blank" class="nav-link">🧪 Test Sandbox</a>
       <a href="smartfill-ai-assistant.zip" download="smartfill-ai-assistant.zip" class="btn-3d btn-primary" style="padding:8px 16px; font-size:13px;">
         ⬇️ Download ZIP
       </a>
@@ -486,84 +478,200 @@
           </svg>
           Download Extension (.zip)
         </a>
-        <a href="#demo" class="btn-3d btn-secondary" style="padding:14px 24px; font-size:16px; font-weight:700; text-decoration:none;">
-          ▶ Watch AI Demo
+        <a href="#guide-video" class="btn-3d btn-secondary" style="padding:14px 24px; font-size:16px; font-weight:700; text-decoration:none;">
+          ▶ Watch Step-by-Step Video
         </a>
       </div>
     </section>
 
-    <!-- Interactive AI Generated Video & Simulation Demo -->
-    <section id="demo" style="scroll-margin-top: 80px;">
-      <div style="text-align:center; margin-bottom:20px;">
-        <h2 class="section-headline">Interactive Live Demo Simulation</h2>
-        <p class="section-desc">Watch SmartFill identify, match, and autofill complex forms with zero placeholder overlap in real time.</p>
+    <!-- AI Step-by-Step Video Guide & Walkthrough Player -->
+    <section id="guide-video" style="scroll-margin-top: 80px;">
+      <div style="text-align:center; margin-bottom:24px;">
+        <h2 class="section-headline">Step-by-Step Interactive Video Guide</h2>
+        <p class="section-desc">Watch the animated walkthrough from downloading the ZIP package to configuring your vault and autofilling live web forms.</p>
       </div>
 
-      <div class="demo-player-container">
-        <!-- Mock Browser Window -->
-        <div class="demo-browser-bar">
-          <div class="browser-dots">
-            <span class="browser-dot dot-red"></span>
-            <span class="browser-dot dot-yellow"></span>
-            <span class="browser-dot dot-green"></span>
-          </div>
-          <div class="browser-address-bar">
-            🔒 <span id="demoUrlText">https://docs.google.com/forms/d/event-rsvp/viewform</span>
-          </div>
-          <div style="font-size:13px; font-weight:700; color:var(--primary-cyan);">
-            ⚡ SmartFill Active
-          </div>
+      <div class="video-guide-wrapper">
+        <!-- 3D Graphic Poster Banner -->
+        <img src="assets/step-guide-showcase.jpg" alt="Step-by-step installation illustration" class="video-top-banner">
+
+        <!-- Timeline Step Tabs -->
+        <div class="video-timeline-nav">
+          <button class="timeline-step-btn active" data-step="1">
+            <span class="timeline-step-num">STEP 1</span>
+            <span>1. Download ZIP</span>
+          </button>
+          <button class="timeline-step-btn" data-step="2">
+            <span class="timeline-step-num">STEP 2</span>
+            <span>2. Open Extensions</span>
+          </button>
+          <button class="timeline-step-btn" data-step="3">
+            <span class="timeline-step-num">STEP 3</span>
+            <span>3. Load Unpacked</span>
+          </button>
+          <button class="timeline-step-btn" data-step="4">
+            <span class="timeline-step-num">STEP 4</span>
+            <span>4. Fill Your Vault</span>
+          </button>
+          <button class="timeline-step-btn" data-step="5">
+            <span class="timeline-step-num">STEP 5</span>
+            <span>5. 1-Click Autofill</span>
+          </button>
         </div>
 
-        <!-- Demo Category Switcher -->
-        <div class="demo-tabs-bar">
-          <div class="demo-tab-item active" data-scenario="gform">📝 Google Forms RSVP</div>
-          <div class="demo-tab-item" data-scenario="job">💼 Workday Job Portal</div>
-          <div class="demo-tab-item" data-scenario="checkout">🛍️ E-Commerce Checkout</div>
-        </div>
-
-        <!-- Simulation Stage -->
-        <div class="demo-stage">
-          <div class="stage-form" id="simFormContainer">
-            
-            <!-- Field 1 -->
-            <div class="sim-field">
-              <label class="sim-label" id="simLabel1">Full Name *</label>
-              <div class="sim-input-wrapper">
-                <input type="text" class="sim-input" id="simInput1" placeholder="Your answer" readonly>
-                <div class="sim-floating-badge" id="simBadge1">
-                  ⚡ SmartFill
+        <!-- Video Simulation Screen Stage -->
+        <div class="video-screen-stage">
+          
+          <!-- Scene 1 -->
+          <div class="video-scene active" id="scene1">
+            <div class="scene-card">
+              <div class="scene-header">
+                <div class="scene-title-badge">
+                  <span>📦 Step 1: Download & Extract Package</span>
+                </div>
+                <span class="scene-badge-pill">0:00 - 0:06</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:14px;">
+                Click the <strong>Download ZIP</strong> button to download the extension files to your computer, then extract the archive.
+              </p>
+              <div class="scene-visual-action" style="text-align:center;">
+                <div style="font-size:40px; margin-bottom:8px;">⬇️</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--primary-cyan);">
+                  smartfill-ai-assistant.zip (1.5 MB)
+                </div>
+                <div style="margin-top:12px; font-size:12px; color:#10B981; font-weight:700;">
+                  ✓ Package downloaded & unzipped into folder: /smartfill-ai-assistant
                 </div>
               </div>
             </div>
-
-            <!-- Field 2 -->
-            <div class="sim-field">
-              <label class="sim-label" id="simLabel2">Email Address *</label>
-              <div class="sim-input-wrapper">
-                <input type="text" class="sim-input" id="simInput2" placeholder="Your answer" readonly>
-                <div class="sim-floating-badge" id="simBadge2">
-                  ⚡ SmartFill
-                </div>
-              </div>
-            </div>
-
-            <!-- Field 3 -->
-            <div class="sim-field">
-              <label class="sim-label" id="simLabel3">Contact Number *</label>
-              <div class="sim-input-wrapper">
-                <input type="text" class="sim-input" id="simInput3" placeholder="Your answer" readonly>
-                <div class="sim-floating-badge" id="simBadge3">
-                  ⚡ SmartFill
-                </div>
-              </div>
-            </div>
-
           </div>
 
-          <div class="sim-controls">
-            <button id="simPlayBtn" class="btn-3d btn-primary btn-sm">▶ Replay Simulation</button>
-            <span id="simStatusText" style="font-size:12.5px; color:var(--text-secondary);">Simulating user interaction...</span>
+          <!-- Scene 2 -->
+          <div class="video-scene" id="scene2">
+            <div class="scene-card">
+              <div class="scene-header">
+                <div class="scene-title-badge">
+                  <span>⚙️ Step 2: Open Extensions & Enable Developer Mode</span>
+                </div>
+                <span class="scene-badge-pill">0:06 - 0:12</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:14px;">
+                Open Google Chrome (or Brave/Edge) and navigate to the extensions page, then enable Developer mode in the top right.
+              </p>
+              <div class="scene-visual-action">
+                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:6px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#00d2ff;">
+                    chrome://extensions
+                  </span>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:12px; font-weight:700; color:#34d399;">Developer mode: ON</span>
+                    <div style="width:36px; height:18px; background:#00d2ff; border-radius:10px; position:relative; box-shadow:0 0 10px #00d2ff;">
+                      <div style="width:14px; height:14px; background:#fff; border-radius:50%; position:absolute; right:2px; top:2px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scene 3 -->
+          <div class="video-scene" id="scene3">
+            <div class="scene-card">
+              <div class="scene-header">
+                <div class="scene-title-badge">
+                  <span>📂 Step 3: Click "Load unpacked" & Select Folder</span>
+                </div>
+                <span class="scene-badge-pill">0:12 - 0:18</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:14px;">
+                Click the top-left <strong>"Load unpacked"</strong> button and select your unzipped <code>smartfill-ai-assistant</code> folder.
+              </p>
+              <div class="scene-visual-action">
+                <div style="display:flex; align-items:center; gap:12px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); padding:12px; border-radius:8px;">
+                  <div style="font-size:26px;">⚡</div>
+                  <div>
+                    <div style="font-size:14px; font-weight:800; color:#fff;">SmartFill AI Assistant 1.0.0</div>
+                    <div style="font-size:12px; color:#34d399;">✓ Extension active & pinned to toolbar</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scene 4 -->
+          <div class="video-scene" id="scene4">
+            <div class="scene-card">
+              <div class="scene-header">
+                <div class="scene-title-badge">
+                  <span>🛡️ Step 4: Configure Your Encrypted Vault</span>
+                </div>
+                <span class="scene-badge-pill">0:18 - 0:24</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:14px;">
+                Click the <strong>SmartFill</strong> icon in your browser toolbar to enter your personal details, structured address, and optional 4-digit security PIN.
+              </p>
+              <div class="scene-visual-action">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px;">
+                  <div style="background:rgba(255,255,255,0.05); padding:8px 10px; border-radius:6px;">
+                    <span style="color:var(--text-muted);">Name:</span> <strong>Alex Morgan</strong>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.05); padding:8px 10px; border-radius:6px;">
+                    <span style="color:var(--text-muted);">Email:</span> <strong>alex@example.com</strong>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.05); padding:8px 10px; border-radius:6px;">
+                    <span style="color:var(--text-muted);">Address:</span> <strong>Flat 4B, 123 Tech Way</strong>
+                  </div>
+                  <div style="background:rgba(255,255,255,0.05); padding:8px 10px; border-radius:6px;">
+                    <span style="color:var(--text-muted);">PIN Vault:</span> <strong style="color:#00d2ff;">🔒 Encrypted (PBKDF2)</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scene 5 -->
+          <div class="video-scene" id="scene5">
+            <div class="scene-card">
+              <div class="scene-header">
+                <div class="scene-title-badge">
+                  <span>✨ Step 5: 1-Click Autofill on Any Website</span>
+                </div>
+                <span class="scene-badge-pill">0:24 - 0:30</span>
+              </div>
+              <p style="color:var(--text-secondary); font-size:14px;">
+                Navigate to any Google Form, job portal, or checkout page and click <strong>"Fill Current Form"</strong> or the floating 3D SmartFill badge!
+              </p>
+              <div class="scene-visual-action" style="text-align:center;">
+                <div style="font-size:32px; margin-bottom:6px;">⚡</div>
+                <div style="font-size:14px; font-weight:800; color:#34d399;">
+                  All form fields filled instantly with 0 placeholder overlap!
+                </div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                  Shortcut: <kbd style="background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:4px;">Alt + Shift + F</kbd>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Video Controls Bar -->
+        <div class="video-controls-bar">
+          <div class="video-playback-btns">
+            <button id="videoPlayPauseBtn" class="btn-3d btn-primary btn-sm" style="min-width:70px;">
+              ⏸ Pause
+            </button>
+            <button id="videoRestartBtn" class="btn-3d btn-secondary btn-sm">
+              🔁 Restart
+            </button>
+          </div>
+
+          <div class="scrubber-track" id="videoScrubberTrack">
+            <div class="scrubber-fill" id="videoScrubberFill"></div>
+          </div>
+
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--primary-cyan); min-width:60px; text-align:right;" id="videoTimeDisplay">
+            0:00 / 0:30
           </div>
         </div>
       </div>
@@ -651,130 +759,89 @@
     <p>SmartFill AI Assistant • Manifest V3 Google Chrome Extension • 100% Client-Side Privacy</p>
   </footer>
 
-  <!-- Simulation Script -->
+  <!-- Step-by-Step Video Guide Controller Script -->
   <script>
-    const scenarios = {
-      gform: {
-        url: 'https://docs.google.com/forms/d/event-rsvp/viewform',
-        f1: { label: 'Full Name *', value: 'Alex Morgan' },
-        f2: { label: 'Email Address *', value: 'alex.morgan@techcorp.io' },
-        f3: { label: 'Contact Number *', value: '+1 (555) 234-5678' }
-      },
-      job: {
-        url: 'https://workday.com/careers/senior-engineer/apply',
-        f1: { label: 'Candidate Full Name', value: 'Alex Morgan' },
-        f2: { label: 'Work Email Address', value: 'alex.morgan@techcorp.io' },
-        f3: { label: 'Mobile / Phone', value: '+1 (555) 234-5678' }
-      },
-      checkout: {
-        url: 'https://checkout.shopify.com/pay/order-8921',
-        f1: { label: 'Recipient Name', value: 'Alex Morgan' },
-        f2: { label: 'Billing Email', value: 'alex.morgan@techcorp.io' },
-        f3: { label: 'Phone Number', value: '+1 (555) 234-5678' }
-      }
-    };
+    let currentStep = 1;
+    let isPlaying = true;
+    let timerSeconds = 0;
+    const totalSeconds = 30;
+    let videoInterval = null;
 
-    let currentScenario = 'gform';
-    let simTimeout = null;
+    const timelineBtns = document.querySelectorAll('.timeline-step-btn');
+    const scenes = document.querySelectorAll('.video-scene');
+    const playPauseBtn = document.getElementById('videoPlayPauseBtn');
+    const restartBtn = document.getElementById('videoRestartBtn');
+    const scrubberFill = document.getElementById('videoScrubberFill');
+    const timeDisplay = document.getElementById('videoTimeDisplay');
+    const scrubberTrack = document.getElementById('videoScrubberTrack');
 
-    const demoUrlText = document.getElementById('demoUrlText');
-    const simLabel1 = document.getElementById('simLabel1');
-    const simLabel2 = document.getElementById('simLabel2');
-    const simLabel3 = document.getElementById('simLabel3');
-    const simInput1 = document.getElementById('simInput1');
-    const simInput2 = document.getElementById('simInput2');
-    const simInput3 = document.getElementById('simInput3');
-    const simBadge1 = document.getElementById('simBadge1');
-    const simBadge2 = document.getElementById('simBadge2');
-    const simBadge3 = document.getElementById('simBadge3');
-    const simPlayBtn = document.getElementById('simPlayBtn');
-    const simStatusText = document.getElementById('simStatusText');
-    const demoTabItems = document.querySelectorAll('.demo-tab-item');
-
-    function loadScenario(key) {
-      currentScenario = key;
-      const data = scenarios[key];
-      demoUrlText.textContent = data.url;
-      simLabel1.textContent = data.f1.label;
-      simLabel2.textContent = data.f2.label;
-      simLabel3.textContent = data.f3.label;
-      resetSimulation();
-      runSimulation();
+    function showScene(stepNum) {
+      currentStep = stepNum;
+      timelineBtns.forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.step) === stepNum);
+      });
+      scenes.forEach((sc, idx) => {
+        sc.classList.toggle('active', idx + 1 === stepNum);
+      });
     }
 
-    demoTabItems.forEach(tab => {
-      tab.addEventListener('click', () => {
-        demoTabItems.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        loadScenario(tab.getAttribute('data-scenario'));
+    function updateTimeUI() {
+      const pct = (timerSeconds / totalSeconds) * 100;
+      scrubberFill.style.width = `${pct}%`;
+      const s = Math.floor(timerSeconds);
+      timeDisplay.textContent = `0:${s < 10 ? '0' : ''}${s} / 0:30`;
+
+      // Determine step based on time
+      const targetStep = Math.min(5, Math.floor(timerSeconds / 6) + 1);
+      if (targetStep !== currentStep) {
+        showScene(targetStep);
+      }
+    }
+
+    function startVideoLoop() {
+      if (videoInterval) clearInterval(videoInterval);
+      videoInterval = setInterval(() => {
+        if (!isPlaying) return;
+        timerSeconds += 0.25;
+        if (timerSeconds >= totalSeconds) {
+          timerSeconds = 0;
+        }
+        updateTimeUI();
+      }, 250);
+    }
+
+    timelineBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.dataset.step);
+        timerSeconds = (step - 1) * 6;
+        showScene(step);
+        updateTimeUI();
       });
     });
 
-    function resetSimulation() {
-      if (simTimeout) clearTimeout(simTimeout);
-      [simInput1, simInput2, simInput3].forEach(input => {
-        input.value = '';
-        input.classList.remove('sim-active', 'sim-filled');
-      });
-      [simBadge1, simBadge2, simBadge3].forEach(badge => {
-        badge.classList.remove('visible');
-      });
-    }
+    scrubberTrack.addEventListener('click', (e) => {
+      const rect = scrubberTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      timerSeconds = pct * totalSeconds;
+      updateTimeUI();
+    });
 
-    function typeWriter(element, text, callback) {
-      let i = 0;
-      element.value = '';
-      element.classList.add('sim-active');
-      const interval = setInterval(() => {
-        element.value += text.charAt(i);
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          element.classList.remove('sim-active');
-          element.classList.add('sim-filled');
-          if (callback) callback();
-        }
-      }, 45);
-    }
+    playPauseBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playPauseBtn.textContent = isPlaying ? '⏸ Pause' : '▶ Play';
+    });
 
-    function runSimulation() {
-      resetSimulation();
-      const data = scenarios[currentScenario];
-      simStatusText.textContent = '1. User focuses field...';
+    restartBtn.addEventListener('click', () => {
+      timerSeconds = 0;
+      isPlaying = true;
+      playPauseBtn.textContent = '⏸ Pause';
+      showScene(1);
+      updateTimeUI();
+    });
 
-      // Step 1: Focus input 1 & reveal badge
-      simTimeout = setTimeout(() => {
-        simInput1.classList.add('sim-active');
-        simBadge1.classList.add('visible');
-        simStatusText.textContent = '2. SmartFill 3D badge detects field matching...';
-
-        // Step 2: Click badge & fill Field 1
-        simTimeout = setTimeout(() => {
-          simBadge1.classList.remove('visible');
-          typeWriter(simInput1, data.f1.value, () => {
-            simStatusText.textContent = '3. Autofilling remaining fields across page...';
-
-            // Step 3: Fill Field 2
-            simTimeout = setTimeout(() => {
-              typeWriter(simInput2, data.f2.value, () => {
-                
-                // Step 4: Fill Field 3
-                simTimeout = setTimeout(() => {
-                  typeWriter(simInput3, data.f3.value, () => {
-                    simStatusText.textContent = '✨ 100% Autofill Complete with zero placeholder overlap!';
-                  });
-                }, 300);
-              });
-            }, 300);
-          });
-        }, 1000);
-      }, 600);
-    }
-
-    simPlayBtn.addEventListener('click', runSimulation);
-
-    // Run simulation on start
-    runSimulation();
+    // Start video loop
+    startVideoLoop();
   </script>
 </body>
 </html>
