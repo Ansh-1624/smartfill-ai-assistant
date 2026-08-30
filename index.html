@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/3d-theme.css">
+  <link rel="stylesheet" href="popup/popup.css">
   <style>
     :root {
       --hero-glow: radial-gradient(circle at 50% 20%, rgba(0, 210, 255, 0.15), rgba(112, 0, 255, 0.12) 40%, transparent 70%);
@@ -149,22 +150,22 @@
     }
 
     /* =========================================================================
-       Human-Style Desktop Screen Recording Video Player
+       Human-Style Desktop Screen Recording Video Player (Real UI Engine)
        ========================================================================= */
     .screen-recorder-frame {
       margin: 40px auto 70px auto;
-      max-width: 1020px;
+      max-width: 1060px;
       border-radius: var(--radius-xl);
       background: #0d121f;
       border: 1px solid var(--glass-border-hover);
-      box-shadow: var(--depth-lg), 0 0 80px rgba(0, 210, 255, 0.18);
+      box-shadow: var(--depth-lg), 0 0 90px rgba(0, 210, 255, 0.2);
       overflow: hidden;
       position: relative;
     }
 
     /* macOS Window Chrome Header */
     .mac-window-header {
-      background: #151b2c;
+      background: #181f33;
       padding: 12px 18px;
       display: flex;
       align-items: center;
@@ -175,7 +176,7 @@
 
     .mac-traffic-lights {
       display: flex;
-      gap: 7px;
+      gap: 8px;
     }
     .traffic-dot {
       width: 12px;
@@ -191,12 +192,12 @@
       align-items: center;
       gap: 6px;
       flex: 1;
-      max-width: 460px;
+      max-width: 500px;
       margin: 0 16px;
     }
 
     .mac-active-tab {
-      background: #1e263c;
+      background: #242e47;
       border: 1px solid var(--glass-border);
       border-bottom: none;
       padding: 6px 16px;
@@ -207,18 +208,18 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      max-width: 220px;
+      max-width: 240px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .mac-omnibox {
-      background: #111726;
+      background: #101524;
       border: 1px solid var(--glass-border);
       border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 11.5px;
+      padding: 5px 16px;
+      font-size: 12px;
       color: var(--text-secondary);
       flex: 1;
       display: flex;
@@ -230,15 +231,15 @@
     .mac-toolbar-icons {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .toolbar-pin-btn {
-      width: 26px;
-      height: 26px;
-      background: rgba(0, 210, 255, 0.15);
+      width: 28px;
+      height: 28px;
+      background: rgba(0, 210, 255, 0.18);
       border: 1px solid var(--primary-cyan);
       border-radius: 6px;
       display: flex;
@@ -246,12 +247,12 @@
       justify-content: center;
       color: var(--primary-cyan);
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.5);
     }
 
     /* Screen Stage */
     .screen-recording-stage {
-      min-height: 480px;
+      min-height: 520px;
       background: #090d16;
       position: relative;
       overflow: hidden;
@@ -264,13 +265,13 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       pointer-events: none;
-      z-index: 999;
+      z-index: 9999;
       transform: translate(-2px, -2px);
-      transition: top 0.7s cubic-bezier(0.25, 1, 0.5, 1), left 0.7s cubic-bezier(0.25, 1, 0.5, 1);
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+      transition: top 0.75s cubic-bezier(0.25, 1, 0.5, 1), left 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
     }
 
     .human-mouse-cursor svg {
@@ -280,13 +281,13 @@
 
     .click-ripple {
       position: absolute;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 2px solid #00d2ff;
-      background: rgba(0, 210, 255, 0.3);
-      top: -6px;
-      left: -6px;
+      background: rgba(0, 210, 255, 0.35);
+      top: -7px;
+      left: -7px;
       opacity: 0;
       transform: scale(0.4);
       pointer-events: none;
@@ -298,14 +299,14 @@
 
     @keyframes rippleEffect {
       0% { opacity: 1; transform: scale(0.4); }
-      100% { opacity: 0; transform: scale(1.6); }
+      100% { opacity: 0; transform: scale(1.8); }
     }
 
     /* Scenes Canvas */
     .rec-scene {
       display: none;
       flex: 1;
-      padding: 30px;
+      padding: 24px;
       position: relative;
     }
     .rec-scene.active {
@@ -320,74 +321,265 @@
       to { opacity: 1; }
     }
 
-    /* Scene Specific Layouts */
-    .downloads-shelf-box {
-      background: #182033;
-      border: 1px solid var(--glass-border-hover);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: var(--depth-lg);
-      margin: 0 auto;
+    /* REAL PAGE 1: Download Screen */
+    .real-download-view {
+      text-align: center;
+      padding: 40px 20px;
     }
 
-    .finder-modal-window {
-      max-width: 520px;
-      margin: 0 auto;
-      background: #1a2236;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      overflow: hidden;
-    }
-
-    .ext-settings-mock {
-      background: #111726;
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 20px;
-      max-width: 620px;
-      margin: 0 auto;
-    }
-
-    .toggle-pill {
-      width: 44px;
-      height: 22px;
-      background: #334155;
-      border-radius: 12px;
-      position: relative;
-      transition: background 0.3s ease;
-    }
-    .toggle-pill.on {
-      background: #00d2ff;
-      box-shadow: 0 0 12px #00d2ff;
-    }
-    .toggle-knob {
-      width: 18px;
-      height: 18px;
-      background: #fff;
-      border-radius: 50%;
+    .real-download-shelf {
       position: absolute;
-      top: 2px;
-      left: 2px;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .toggle-pill.on .toggle-knob {
-      transform: translateX(22px);
-    }
-
-    /* Floating Subtitles Overlay */
-    .narration-subtitles-bar {
-      background: rgba(10, 14, 26, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid var(--glass-border);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a2236;
+      border-top: 1px solid var(--glass-border-hover);
       padding: 12px 24px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* REAL PAGE 2: chrome://extensions Page */
+    .real-extensions-page {
+      background: #202124;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      color: #e8eaed;
+      font-family: -apple-system, Roboto, sans-serif;
+    }
+
+    .cr-ext-topbar {
+      background: #292a2d;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c4043;
+    }
+
+    .cr-search-box {
+      background: #202124;
+      border: 1px solid #5f6368;
+      border-radius: 20px;
+      padding: 6px 16px;
+      width: 280px;
+      font-size: 13px;
+      color: #9aa0a6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cr-dev-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #e8eaed;
+    }
+
+    .cr-actions-bar {
+      background: #292a2d;
+      padding: 10px 24px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid #3c4043;
+    }
+
+    .cr-btn {
+      background: #3c4043;
+      border: 1px solid #5f6368;
+      color: #8ab4f8;
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .cr-btn.primary {
+      background: #8ab4f8;
+      color: #202124;
+      border: none;
+    }
+
+    .cr-extension-card {
+      background: #292a2d;
+      border: 1px solid #3c4043;
+      border-radius: 8px;
+      padding: 18px;
+      max-width: 580px;
+      margin: 20px auto;
+      display: flex;
+      gap: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* REAL PAGE 3: macOS Finder Modal */
+    .real-finder-dialog {
+      background: #1e222b;
+      border: 1px solid #3b4252;
+      border-radius: 10px;
+      width: 620px;
+      margin: 0 auto;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+      overflow: hidden;
+    }
+
+    .finder-titlebar {
+      background: #2e3440;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: #d8dee9;
+      border-bottom: 1px solid #434c5e;
+    }
+
+    .finder-body {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      min-height: 220px;
+    }
+
+    .finder-sidebar {
+      background: #242933;
+      border-right: 1px solid #3b4252;
+      padding: 12px;
+      font-size: 12px;
+      color: #9aa0a6;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .finder-item {
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .finder-item.active {
+      background: #00d2ff;
+      color: #000;
+      font-weight: 700;
+    }
+
+    .finder-files {
+      padding: 16px;
+      background: #1e222b;
+    }
+
+    .folder-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgba(0, 210, 255, 0.12);
+      border: 1px solid #00d2ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* REAL PAGE 4: Exact Extension Popup Dropdown */
+    .real-popup-overlay-stage {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 40px;
+      align-items: flex-start;
+      height: 100%;
+    }
+
+    .real-popup-mock-wrapper {
+      width: 380px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 30px rgba(0, 210, 255, 0.3);
+      border: 1px solid var(--glass-border-hover);
+      background: var(--bg-surface);
+      overflow: hidden;
+    }
+
+    /* REAL PAGE 5: Real Google Form */
+    .real-google-form-page {
+      background: #f0ebf8;
+      border-radius: 8px;
+      padding: 24px;
+      max-width: 620px;
+      margin: 0 auto;
+      color: #202124;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-family: 'Roboto', -apple-system, sans-serif;
+    }
+
+    .gf-header-card {
+      background: #ffffff;
+      border-top: 8px solid #673ab7;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    .gf-title {
+      font-size: 24px;
+      font-weight: 500;
+      color: #202124;
+      margin: 0 0 8px 0;
+    }
+
+    .gf-question-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    .gf-q-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .gf-input-underline {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #70757a;
+      padding: 8px 0;
+      font-size: 14px;
+      outline: none;
+      background: transparent;
+      color: #202124;
+      transition: all 0.3s ease;
+    }
+
+    .gf-input-underline.filled {
+      border-bottom: 2px solid #673ab7;
+      color: #1a73e8;
+      font-weight: 500;
+    }
+
+    /* Subtitles Bar */
+    .narration-subtitles-bar {
+      background: rgba(10, 14, 26, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--glass-border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       font-size: 14px;
       font-weight: 600;
       color: #fff;
@@ -398,7 +590,7 @@
       color: #fff;
       font-size: 11px;
       font-weight: 800;
-      padding: 3px 10px;
+      padding: 4px 12px;
       border-radius: 20px;
       white-space: nowrap;
     }
@@ -406,7 +598,7 @@
     /* Video Controller Bar */
     .rec-video-controls {
       background: #151b2c;
-      padding: 12px 20px;
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -428,7 +620,7 @@
       width: 0%;
       background: var(--primary-gradient);
       border-radius: 3px;
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.8);
       transition: width 0.15s linear;
     }
 
@@ -566,10 +758,10 @@
       <span>SmartFill AI</span>
     </a>
     <nav class="nav-links">
-      <a href="#video-tour" class="nav-link">🎥 Visual Screen Video</a>
+      <a href="#video-tour" class="nav-link">🎥 Real Screen Walkthrough</a>
       <a href="#install" class="nav-link">Install Steps</a>
       <a href="#features" class="nav-link">Features</a>
-      <a href="test-form.html" target="_blank" class="nav-link">🧪 Test Sandbox</a>
+      <a href="test-form.html" target="_blank" class="nav-link">🧪 Sandbox</a>
       <a href="smartfill-ai-assistant.zip" download="smartfill-ai-assistant.zip" class="btn-3d btn-primary" style="padding:8px 16px; font-size:13px;">
         ⬇️ Download ZIP
       </a>
@@ -594,16 +786,16 @@
           Download Extension (.zip)
         </a>
         <a href="#video-tour" class="btn-3d btn-secondary" style="padding:14px 24px; font-size:16px; font-weight:700; text-decoration:none;">
-          ▶ Watch Screen Walkthrough
+          ▶ Watch Real Screen Video
         </a>
       </div>
     </section>
 
-    <!-- Human Screen Recording Video Simulation Box -->
+    <!-- REAL-SCREEN WALKTHROUGH VIDEO SIMULATOR -->
     <section id="video-tour" style="scroll-margin-top: 80px;">
       <div style="text-align:center; margin-bottom:20px;">
-        <h2 class="section-headline">Beginner's Step-by-Step Screen Recording Walkthrough</h2>
-        <p class="section-desc">Watch a complete demonstration from downloading the zip to setting up your personal vault and 1-click form autofill.</p>
+        <h2 class="section-headline">Real Chrome Desktop Screen Recording</h2>
+        <p class="section-desc">Watch an authentic screen recording of the actual Chrome pages, finder dialog, extension popup, and live form autofill.</p>
       </div>
 
       <div class="screen-recorder-frame">
@@ -618,7 +810,7 @@
 
           <div class="mac-browser-tab-bar">
             <div class="mac-active-tab" id="recTabTitle">
-              ⚡ SmartFill Download Hub
+              ⚡ SmartFill AI Assistant
             </div>
           </div>
 
@@ -627,7 +819,7 @@
           </div>
 
           <div class="mac-toolbar-icons">
-            <div class="toolbar-pin-btn" title="SmartFill Extension" id="recToolbarPin">
+            <div class="toolbar-pin-btn" id="recToolbarPin">
               ⚡
             </div>
             <span>🧩</span>
@@ -646,116 +838,207 @@
             <div class="click-ripple" id="clickRipple"></div>
           </div>
 
-          <!-- SCENE 1: Download & Unzip -->
+          <!-- SCENE 1: REAL Web Download Shelf -->
           <div class="rec-scene active" id="recScene1">
-            <div style="text-align:center;">
-              <h3 style="font-size:22px; font-weight:800; margin-bottom:18px;">1. Downloading Extension Package</h3>
-              <div class="downloads-shelf-box" id="recDownloadBtnTarget">
-                <div style="font-size:36px;">📦</div>
-                <div style="text-align:left;">
-                  <div style="font-size:14px; font-weight:800; color:#fff;">smartfill-ai-assistant.zip</div>
-                  <div style="font-size:12px; color:#34d399;" id="downloadStatusText">⬇️ Downloading... 100% (1.5 MB)</div>
-                </div>
-                <button class="btn-3d btn-primary btn-sm" id="simDownloadActionBtn">Show in Folder</button>
-              </div>
-              <p style="color:var(--text-muted); font-size:13px; margin-top:20px;">
-                Unzipping into folder: <code style="color:#00d2ff;">~/Downloads/smartfill-ai-assistant</code>
+            <div class="real-download-view">
+              <h2 style="font-size:32px; font-weight:800; margin-bottom:14px; color:#fff;">Get SmartFill AI for Chrome</h2>
+              <p style="color:var(--text-secondary); max-width:540px; margin:0 auto 28px auto;">
+                Download the lightweight Manifest V3 extension package and unzip it to your computer.
               </p>
+              <button class="btn-3d btn-primary" id="simHeroDownloadBtn" style="padding:14px 28px; font-size:16px;">
+                ⬇️ Download smartfill-ai-assistant.zip (1.5 MB)
+              </button>
+            </div>
+
+            <div class="real-download-shelf" id="recShelfBox">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <span style="font-size:26px;">📦</span>
+                <div>
+                  <div style="font-size:13px; font-weight:700; color:#fff;">smartfill-ai-assistant.zip</div>
+                  <div style="font-size:11px; color:#34d399;" id="recShelfStatus">1.5 MB • Completed</div>
+                </div>
+              </div>
+              <button class="btn-3d btn-secondary btn-sm" id="recOpenFolderBtn">Show in Finder</button>
             </div>
           </div>
 
-          <!-- SCENE 2: Opening chrome://extensions & Developer Mode -->
+          <!-- SCENE 2: REAL chrome://extensions Page -->
           <div class="rec-scene" id="recScene2">
-            <div class="ext-settings-mock">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:14px; margin-bottom:20px;">
-                <div style="display:flex; align-items:center; gap:10px;">
+            <div class="real-extensions-page">
+              <div class="cr-ext-topbar">
+                <div style="display:flex; align-items:center; gap:12px;">
                   <span style="font-size:20px;">🧩</span>
-                  <span style="font-size:16px; font-weight:800;">Extensions</span>
+                  <span style="font-size:16px; font-weight:700; color:#e8eaed;">Extensions</span>
                 </div>
-                <div style="display:flex; align-items:center; gap:10px;" id="recDevModeTarget">
-                  <span style="font-size:13px; font-weight:700;">Developer mode</span>
-                  <div class="toggle-pill" id="recDevToggle">
+                <div class="cr-search-box">
+                  🔍 <span>Search extensions</span>
+                </div>
+                <div class="cr-dev-toggle" id="recDevToggleContainer">
+                  <span>Developer mode</span>
+                  <div class="toggle-pill" id="realDevTogglePill">
                     <div class="toggle-knob"></div>
                   </div>
                 </div>
               </div>
-              <div style="display:flex; gap:12px;" id="recLoadUnpackedTarget">
-                <button class="btn-3d btn-secondary btn-sm" id="recLoadBtnVisual">📁 Load unpacked</button>
-                <button class="btn-3d btn-secondary btn-sm" disabled style="opacity:0.5;">Pack extension</button>
-                <button class="btn-3d btn-secondary btn-sm" disabled style="opacity:0.5;">Update</button>
+
+              <div class="cr-actions-bar" id="recCrActionsBar">
+                <button class="cr-btn primary" id="recRealLoadBtn">Load unpacked</button>
+                <button class="cr-btn" disabled>Pack extension</button>
+                <button class="cr-btn" disabled>Update</button>
+              </div>
+
+              <div class="cr-extension-card" id="recRealCard" style="display:none;">
+                <img src="icons/icon-48.png" style="width:48px; height:48px; border-radius:8px;" alt="Icon">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-size:14px; font-weight:700; color:#fff;">SmartFill AI Assistant 1.0.0</div>
+                    <div class="toggle-pill on" style="width:36px; height:18px;"><div class="toggle-knob" style="width:14px; height:14px; transform:translateX(18px);"></div></div>
+                  </div>
+                  <div style="font-size:12px; color:#9aa0a6; margin:6px 0;">Intelligent 3D Glassmorphic form-filling assistant with client-side document compression & secure PIN vault.</div>
+                  <div style="font-size:11px; color:#5f6368; font-family:'JetBrains Mono',monospace;">ID: gkbplkmhhnkfaidmgeofpbnobknjlnma</div>
+                  <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="cr-btn">Details</button>
+                    <button class="cr-btn">Remove</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- SCENE 3: Finder Modal & Load Unpacked -->
+          <!-- SCENE 3: REAL macOS Finder Dialog -->
           <div class="rec-scene" id="recScene3">
-            <div class="finder-modal-window">
-              <div style="background:#242e47; padding:10px 16px; font-size:12px; font-weight:700; display:flex; justify-content:space-between;">
+            <div class="real-finder-dialog">
+              <div class="finder-titlebar">
                 <span>Select Extension Directory</span>
                 <span>Downloads</span>
               </div>
-              <div style="padding:20px;">
-                <div style="background:rgba(0,210,255,0.15); border:1px solid #00d2ff; padding:10px 14px; border-radius:8px; display:flex; align-items:center; gap:12px;" id="recFolderTarget">
-                  <span style="font-size:24px;">📁</span>
-                  <div>
-                    <div style="font-size:13px; font-weight:800; color:#fff;">smartfill-ai-assistant</div>
-                    <div style="font-size:11px; color:#94a3b8;">Modified: Today • Folder</div>
+              <div class="finder-body">
+                <div class="finder-sidebar">
+                  <span style="font-weight:700; font-size:11px; color:#4c566a;">Favorites</span>
+                  <div class="finder-item">🏠 Applications</div>
+                  <div class="finder-item active">📂 Downloads</div>
+                  <div class="finder-item">📄 Documents</div>
+                </div>
+                <div class="finder-files">
+                  <div class="folder-row" id="recFolderHighlight">
+                    <span style="font-size:22px;">📁</span>
+                    <div>
+                      <div>smartfill-ai-assistant</div>
+                      <div style="font-size:11px; color:#94a3b8; font-weight:normal;">manifest.json, popup/, content/, utils/</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:50px;">
+                    <button class="btn-3d btn-secondary btn-sm">Cancel</button>
+                    <button class="btn-3d btn-primary btn-sm" id="recFinderSelectBtn">Select Folder</button>
                   </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;" id="recSelectBtnTarget">
-                  <button class="btn-3d btn-secondary btn-sm">Cancel</button>
-                  <button class="btn-3d btn-primary btn-sm" id="recSelectBtnVisual">Select Folder</button>
-                </div>
               </div>
             </div>
           </div>
 
-          <!-- SCENE 4: Configuring Personal Vault in Popup -->
+          <!-- SCENE 4: REAL SmartFill Popup Dashboard -->
           <div class="rec-scene" id="recScene4">
-            <div style="max-width:440px; margin:0 auto; background:#161d2f; border:1px solid var(--glass-border-hover); border-radius:14px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <span style="font-size:14px; font-weight:800; color:#00d2ff;">⚡ SmartFill Vault</span>
-                <span style="font-size:11px; background:#10B981; color:#fff; padding:2px 8px; border-radius:10px; font-weight:700;">Active</span>
-              </div>
-              <div style="display:flex; flex-direction:column; gap:10px; font-size:12px;">
-                <div>
-                  <label style="color:#94a3b8; font-weight:700; font-size:11px;">FULL NAME</label>
-                  <input type="text" class="input-3d" id="recInputName" value="" style="padding:6px 10px; font-size:12px;" readonly>
-                </div>
-                <div>
-                  <label style="color:#94a3b8; font-weight:700; font-size:11px;">EMAIL ADDRESS</label>
-                  <input type="text" class="input-3d" id="recInputEmail" value="" style="padding:6px 10px; font-size:12px;" readonly>
-                </div>
-                <div>
-                  <label style="color:#94a3b8; font-weight:700; font-size:11px;">RESIDENTIAL ADDRESS</label>
-                  <input type="text" class="input-3d" id="recInputAddr" value="" style="padding:6px 10px; font-size:12px;" readonly>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;" id="recSaveBtnTarget">
-                  <span style="font-size:11px; color:#34d399;" id="recSavedToast">🔒 PIN Encrypted</span>
-                  <button class="btn-3d btn-primary btn-sm" id="recSaveBtnVisual">Save Changes</button>
+            <div class="real-popup-overlay-stage">
+              <div class="real-popup-mock-wrapper">
+                <header class="header-card glass-panel" style="padding:14px;">
+                  <div class="header-top">
+                    <div class="brand-row">
+                      <div class="logo-badge">
+                        <img src="icons/icon-32.png" alt="SmartFill Logo" class="logo-icon">
+                      </div>
+                      <div>
+                        <h1 class="greeting-text" style="font-size:14px;">Good Afternoon, Alex 👋</h1>
+                        <p class="subtitle-text" style="font-size:11px;">SmartFill Vault Active</p>
+                      </div>
+                    </div>
+                    <div class="status-badge">
+                      <span class="pulse-dot"></span>
+                      <span>Active</span>
+                    </div>
+                  </div>
+
+                  <div class="storage-widget" style="margin:10px 0;">
+                    <div class="storage-info-row">
+                      <span class="storage-label">Local Storage</span>
+                      <span class="storage-value">403 B / 10.00 MB (0%)</span>
+                    </div>
+                    <div class="meter-wrapper">
+                      <div class="meter-fill" style="width:5%;"></div>
+                    </div>
+                  </div>
+
+                  <div class="header-actions">
+                    <button class="btn-3d btn-primary fill-btn" style="padding:8px 12px; font-size:12px;">
+                      ⚡ Fill Current Form
+                    </button>
+                    <button class="btn-3d btn-emerald lock-btn" style="padding:8px 12px; font-size:12px;">
+                      🔓 Unlocked
+                    </button>
+                  </div>
+                </header>
+
+                <nav class="nav-tabs" style="margin:10px 14px;">
+                  <button class="tab-btn active">Personal</button>
+                  <button class="tab-btn">Address</button>
+                  <button class="tab-btn">Pro</button>
+                  <button class="tab-btn">Docs</button>
+                  <button class="tab-btn">Custom</button>
+                  <button class="tab-btn">⚙️</button>
+                </nav>
+
+                <div style="padding:0 14px 14px 14px;">
+                  <div class="glass-card-3d" style="padding:14px;">
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label class="form-label" style="font-size:10px;">Full Name</label>
+                      <input type="text" class="input-3d" id="realPopupName" placeholder="Alex Morgan" style="padding:7px 10px; font-size:12px;" readonly>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                      <label class="form-label" style="font-size:10px;">Email Address</label>
+                      <input type="email" class="input-3d" id="realPopupEmail" placeholder="alex.morgan@techcorp.io" style="padding:7px 10px; font-size:12px;" readonly>
+                    </div>
+                    <div class="form-group" style="margin-bottom:12px;">
+                      <label class="form-label" style="font-size:10px;">Phone Number</label>
+                      <input type="tel" class="input-3d" id="realPopupPhone" placeholder="+1 (555) 234-5678" style="padding:7px 10px; font-size:12px;" readonly>
+                    </div>
+                    <button class="btn-3d btn-primary" id="realPopupSaveBtn" style="width:100%; padding:9px; font-size:12px;">
+                      💾 Save Changes
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- SCENE 5: 1-Click Form Autofill on Google Forms -->
+          <!-- SCENE 5: REAL Google Forms RSVP Page -->
           <div class="rec-scene" id="recScene5">
-            <div style="max-width:540px; margin:0 auto; background:#161d2f; border:1px solid var(--glass-border); border-radius:12px; padding:24px;">
-              <h4 style="font-size:16px; font-weight:800; margin-bottom:14px; color:#fff;">Event Registration Form</h4>
-              <div style="display:flex; flex-direction:column; gap:12px;">
+            <div class="real-google-form-page">
+              <div class="gf-header-card">
+                <h3 class="gf-title">Campus RSVP & Event Registration</h3>
+                <div style="font-size:12px; color:#5f6368;">Important: Please ensure all information is accurate.</div>
+                <div style="font-size:12px; color:#d93025; margin-top:8px;">* Indicates required question</div>
+              </div>
+
+              <!-- Question 1 -->
+              <div class="gf-question-card">
+                <label class="gf-q-label">Full Name <span style="color:#d93025;">*</span></label>
                 <div style="position:relative;">
-                  <label style="font-size:11px; color:#94a3b8; font-weight:700;">Full Name *</label>
-                  <input type="text" class="input-3d" id="recFormName" placeholder="Your answer" readonly>
-                  <div class="sim-floating-badge" id="recBadgeFill" style="transform:scale(1); opacity:1;">⚡ SmartFill</div>
+                  <input type="text" class="gf-input-underline" id="gfRealName" placeholder="Your answer" readonly>
+                  <div class="sim-floating-badge" id="gfRealBadge" style="transform:scale(1); opacity:1;">
+                    ⚡ SmartFill
+                  </div>
                 </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8; font-weight:700;">Email Address *</label>
-                  <input type="text" class="input-3d" id="recFormEmail" placeholder="Your answer" readonly>
-                </div>
-                <div>
-                  <label style="font-size:11px; color:#94a3b8; font-weight:700;">Address *</label>
-                  <input type="text" class="input-3d" id="recFormAddr" placeholder="Your answer" readonly>
-                </div>
+              </div>
+
+              <!-- Question 2 -->
+              <div class="gf-question-card">
+                <label class="gf-q-label">Email Address <span style="color:#d93025;">*</span></label>
+                <input type="text" class="gf-input-underline" id="gfRealEmail" placeholder="Your answer" readonly>
+              </div>
+
+              <!-- Question 3 -->
+              <div class="gf-question-card">
+                <label class="gf-q-label">Contact Number <span style="color:#d93025;">*</span></label>
+                <input type="text" class="gf-input-underline" id="gfRealPhone" placeholder="Your answer" readonly>
               </div>
             </div>
           </div>
@@ -765,7 +1048,7 @@
         <!-- Subtitles Narration Bar -->
         <div class="narration-subtitles-bar">
           <span class="narration-badge" id="recStepBadge">STEP 1 / 5</span>
-          <span id="recSubtitlesText">Step 1: Click Download ZIP to save the extension package to your computer.</span>
+          <span id="recSubtitlesText">Step 1: Download smartfill-ai-assistant.zip and extract the folder to your computer.</span>
         </div>
 
         <!-- Video Controls Bar -->
@@ -873,11 +1156,11 @@
     <p>SmartFill AI Assistant • Manifest V3 Google Chrome Extension • 100% Client-Side Privacy</p>
   </footer>
 
-  <!-- Human Screen Recording Simulation Engine -->
+  <!-- Real Screen Recording Engine Script -->
   <script>
     let isPlaying = true;
     let timeElapsed = 0;
-    const totalDuration = 35; // 35 seconds complete demo
+    const totalDuration = 35;
     let recTimer = null;
 
     const cursor = document.getElementById('humanCursor');
@@ -891,7 +1174,6 @@
     const playPauseBtn = document.getElementById('recPlayPauseBtn');
     const restartBtn = document.getElementById('recRestartBtn');
 
-    // Scene Elements
     const scenes = [
       document.getElementById('recScene1'),
       document.getElementById('recScene2'),
@@ -903,12 +1185,12 @@
     function moveCursorTo(xPercent, yPercent, callback) {
       cursor.style.left = `${xPercent}%`;
       cursor.style.top = `${yPercent}%`;
-      if (callback) setTimeout(callback, 700);
+      if (callback) setTimeout(callback, 750);
     }
 
     function triggerClickRipple(callback) {
       ripple.classList.remove('animate');
-      void ripple.offsetWidth; // reflow
+      void ripple.offsetWidth;
       ripple.classList.add('animate');
       if (callback) setTimeout(callback, 300);
     }
@@ -920,110 +1202,118 @@
     }
 
     function executeSceneLogic(sec) {
-      // SCENE 1: 0 - 7s (Download ZIP)
+      // SCENE 1: Real Download Page (0 - 7s)
       if (sec >= 0 && sec < 7) {
         setScene(0);
         recTabTitle.textContent = '⚡ SmartFill Download Hub';
         recUrlBar.textContent = 'https://smartfill-ai.vercel.app';
         stepBadge.textContent = 'STEP 1 / 5';
-        subtitles.textContent = 'Step 1: Download smartfill-ai-assistant.zip and extract the folder to your computer.';
+        subtitles.textContent = 'Step 1: Click Download smartfill-ai-assistant.zip and extract the folder on your computer.';
 
-        if (sec < 2) {
-          moveCursorTo(68, 55);
-        } else if (sec >= 2 && sec < 4) {
-          moveCursorTo(68, 55, () => triggerClickRipple());
+        if (sec < 3) {
+          moveCursorTo(50, 48);
+        } else if (sec >= 3 && sec < 5) {
+          moveCursorTo(50, 48, () => triggerClickRipple());
         } else {
-          document.getElementById('downloadStatusText').textContent = '✓ Unzipped to: /smartfill-ai-assistant';
+          moveCursorTo(90, 88);
         }
       }
 
-      // SCENE 2: 7 - 14s (Open chrome://extensions & toggle Developer mode)
+      // SCENE 2: Real chrome://extensions Page (7 - 14s)
       else if (sec >= 7 && sec < 14) {
         setScene(1);
         recTabTitle.textContent = '🧩 Extensions';
         recUrlBar.textContent = 'chrome://extensions';
         stepBadge.textContent = 'STEP 2 / 5';
-        subtitles.textContent = 'Step 2: Open Chrome, go to chrome://extensions and switch ON Developer Mode in the top right.';
+        subtitles.textContent = 'Step 2: Go to chrome://extensions and switch ON Developer mode in the top right.';
 
-        const devToggle = document.getElementById('recDevToggle');
+        const devPill = document.getElementById('realDevTogglePill');
+        const actionsBar = document.getElementById('recCrActionsBar');
+        const card = document.getElementById('recRealCard');
+
         if (sec < 10) {
-          moveCursorTo(78, 38);
-          devToggle.classList.remove('on');
+          moveCursorTo(88, 16);
+          devPill.classList.remove('on');
+          card.style.display = 'none';
         } else {
-          moveCursorTo(78, 38, () => {
+          moveCursorTo(88, 16, () => {
             triggerClickRipple();
-            devToggle.classList.add('on');
+            devPill.classList.add('on');
+            card.style.display = 'flex';
           });
         }
       }
 
-      // SCENE 3: 14 - 21s (Load Unpacked Folder)
+      // SCENE 3: Real macOS Finder Modal (14 - 21s)
       else if (sec >= 14 && sec < 21) {
         setScene(2);
-        recTabTitle.textContent = '🧩 Extensions (Developer Mode)';
+        recTabTitle.textContent = '🧩 Extensions (Load Unpacked)';
         recUrlBar.textContent = 'chrome://extensions';
         stepBadge.textContent = 'STEP 3 / 5';
-        subtitles.textContent = 'Step 3: Click "Load unpacked" and select the unzipped smartfill-ai-assistant folder.';
+        subtitles.textContent = 'Step 3: Click "Load unpacked" and select the smartfill-ai-assistant folder in Finder.';
 
         if (sec < 17) {
-          moveCursorTo(50, 48);
+          moveCursorTo(45, 42);
         } else {
-          moveCursorTo(72, 70, () => triggerClickRipple());
+          moveCursorTo(74, 66, () => triggerClickRipple());
         }
       }
 
-      // SCENE 4: 21 - 28s (Configure Vault Details)
+      // SCENE 4: Real Extension Popup Dashboard (21 - 28s)
       else if (sec >= 21 && sec < 28) {
         setScene(3);
         recTabTitle.textContent = '⚡ SmartFill Vault Active';
         recUrlBar.textContent = 'chrome-extension://smartfill/popup.html';
         stepBadge.textContent = 'STEP 4 / 5';
-        subtitles.textContent = 'Step 4: Open the extension from the toolbar, enter your details & set an encrypted PIN.';
+        subtitles.textContent = 'Step 4: Click the extension icon in the toolbar, enter your info & click Save Changes.';
 
-        const nameInput = document.getElementById('recInputName');
-        const emailInput = document.getElementById('recInputEmail');
-        const addrInput = document.getElementById('recInputAddr');
+        const pName = document.getElementById('realPopupName');
+        const pEmail = document.getElementById('realPopupEmail');
+        const pPhone = document.getElementById('realPopupPhone');
 
         if (sec < 23) {
-          moveCursorTo(50, 36);
-          nameInput.value = 'Alex Morgan';
+          moveCursorTo(72, 42);
+          pName.value = 'Alex Morgan';
         } else if (sec >= 23 && sec < 25) {
-          moveCursorTo(50, 48);
-          emailInput.value = 'alex.morgan@techcorp.io';
+          moveCursorTo(72, 54);
+          pEmail.value = 'alex.morgan@techcorp.io';
         } else if (sec >= 25 && sec < 27) {
-          moveCursorTo(50, 60);
-          addrInput.value = 'Flat 4B, 123 Tech Way, Bengaluru';
+          moveCursorTo(72, 66);
+          pPhone.value = '+1 (555) 234-5678';
         } else {
-          moveCursorTo(72, 72, () => triggerClickRipple());
+          moveCursorTo(72, 78, () => triggerClickRipple());
         }
       }
 
-      // SCENE 5: 28 - 35s (Autofill Live Form)
+      // SCENE 5: Real Google Forms RSVP (28 - 35s)
       else if (sec >= 28 && sec <= 35) {
         setScene(4);
-        recTabTitle.textContent = '📝 Google Forms RSVP';
-        recUrlBar.textContent = 'https://docs.google.com/forms/d/rsvp/viewform';
+        recTabTitle.textContent = '📝 Campus RSVP & Event Registration';
+        recUrlBar.textContent = 'https://docs.google.com/forms/d/event-rsvp/viewform';
         stepBadge.textContent = 'STEP 5 / 5';
-        subtitles.textContent = 'Step 5: Navigate to any form online and click SmartFill — all fields autofill instantly!';
+        subtitles.textContent = 'Step 5: Open any form online — click the 3D SmartFill helper badge to autofill in 1 second!';
 
-        const fName = document.getElementById('recFormName');
-        const fEmail = document.getElementById('recFormEmail');
-        const fAddr = document.getElementById('recFormAddr');
+        const gfName = document.getElementById('gfRealName');
+        const gfEmail = document.getElementById('gfRealEmail');
+        const gfPhone = document.getElementById('gfRealPhone');
 
-        if (sec < 30) {
-          moveCursorTo(82, 42);
-          fName.value = '';
-          fEmail.value = '';
-          fAddr.value = '';
+        if (sec < 31) {
+          moveCursorTo(68, 48);
+          gfName.value = '';
+          gfName.classList.remove('filled');
+          gfEmail.value = '';
+          gfEmail.classList.remove('filled');
+          gfPhone.value = '';
+          gfPhone.classList.remove('filled');
         } else {
-          moveCursorTo(82, 42, () => {
+          moveCursorTo(68, 48, () => {
             triggerClickRipple();
-            fName.value = 'Alex Morgan';
-            fEmail.value = 'alex.morgan@techcorp.io';
-            fAddr.value = 'Flat 4B, 123 Tech Way, Bengaluru';
-            fName.style.borderColor = '#10B981';
-            fEmail.style.borderColor = '#10B981';
-            fAddr.style.borderColor = '#10B981';
+            gfName.value = 'Alex Morgan';
+            gfName.classList.add('filled');
+            gfEmail.value = 'alex.morgan@techcorp.io';
+            gfEmail.classList.add('filled');
+            gfPhone.value = '+1 (555) 234-5678';
+            gfPhone.classList.add('filled');
           });
         }
       }
@@ -1071,7 +1361,6 @@
       updateRecordingLoop();
     });
 
-    // Start simulation on load
     startRecording();
   </script>
 </body>
