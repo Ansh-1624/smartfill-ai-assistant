@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const optFirstName = document.getElementById('optFirstName');
   const optLastName = document.getElementById('optLastName');
   const optEmail = document.getElementById('optEmail');
+  const optSecondaryEmail = document.getElementById('optSecondaryEmail');
   const optPhone = document.getElementById('optPhone');
   const optDob = document.getElementById('optDob');
   const optGender = document.getElementById('optGender');
@@ -122,6 +123,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     optFirstName.value = appData.personal.firstName || '';
     optLastName.value = appData.personal.lastName || '';
     optEmail.value = appData.personal.email || '';
+    if (optSecondaryEmail) {
+      optSecondaryEmail.value = appData.personal.secondaryEmail || '';
+    }
     optPhone.value = appData.personal.phone || '';
     optDob.value = appData.personal.dob || '';
     optGender.value = appData.personal.gender || '';
@@ -215,6 +219,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast('⚠️ Please correct invalid email address format');
         optEmail.focus();
         return;
+      }
+      if (appData.personal.secondaryEmail) {
+        const secEmailCheck = DataValidator.validateEmail(appData.personal.secondaryEmail);
+        if (!secEmailCheck.isValid) {
+          showToast('⚠️ Please correct invalid secondary email format');
+          if (optSecondaryEmail) optSecondaryEmail.focus();
+          return;
+        }
       }
       if (!phoneCheck.isValid) {
         showToast('⚠️ Please verify phone number digits');
@@ -356,6 +368,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       firstName: optFirstName.value.trim(),
       lastName: optLastName.value.trim(),
       email: optEmail.value.trim(),
+      secondaryEmail: (optSecondaryEmail?.value || '').trim(),
       phone: optPhone.value.trim(),
       dob: optDob.value,
       gender: optGender.value

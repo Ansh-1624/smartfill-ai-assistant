@@ -15,7 +15,12 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
       lastName: ['lastname', 'last_name', 'lname', 'last', 'surname', 'family_name', 'familyname'],
       email: [
         'email', 'e-mail', 'mail', 'emailaddress', 'email_address', 'user_email',
-        'contact_email', 'work_email', 'personal_email', 'enteremail', 'emailid'
+        'contact_email', 'personal_email', 'primary_email', 'home_email', 'enteremail', 'emailid'
+      ],
+      secondaryEmail: [
+        'work_email', 'workemail', 'office_email', 'officeemail', 'business_email', 'businessemail',
+        'company_email', 'companyemail', 'corporate_email', 'corporateemail', 'secondary_email',
+        'secondaryemail', 'alt_email', 'alternate_email', 'alternateemail', 'official_email', 'officialemail'
       ],
       phone: [
         'phone', 'phonenumber', 'phone_number', 'telephone', 'tel', 'mobile',
@@ -90,14 +95,16 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
         for (const label of el.labels) {
           descriptors.push(this.normalize(label.textContent));
         }
-      } else if (el.id) {
+      } else if (el.id && typeof document !== 'undefined' && typeof document.querySelector === 'function') {
         const label = document.querySelector(`label[for="${el.id}"]`);
         if (label && label.textContent) {
           descriptors.push(this.normalize(label.textContent));
         }
       }
 
-      const questionCard = el.closest('[role="listitem"], .Qr7Oae, .geS5n, .freebirdFormviewerViewNumberedItemContainer, .form-group, .form-field, .input-container, fieldset, tr, [jsmodel]');
+      const questionCard = (typeof el.closest === 'function')
+        ? el.closest('[role="listitem"], .Qr7Oae, .geS5n, .freebirdFormviewerViewNumberedItemContainer, .form-group, .form-field, .input-container, fieldset, tr, [jsmodel]')
+        : null;
       if (questionCard) {
         const titleEls = questionCard.querySelectorAll('[role="heading"], .M7eMe, .HoGqVe, .freebirdFormviewerViewItemsItemItemTitle, legend, label, h1, h2, h3, h4, h5, h6, .title, [jsname="r4nke"]');
         for (const t of titleEls) {
@@ -108,7 +115,7 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
       } else {
         let p = el.parentElement;
         for (let i = 0; i < 5 && p; i++) {
-          const h = p.querySelector('[role="heading"], .M7eMe, .HoGqVe, label, legend, h2, h3, h4');
+          const h = p.querySelector ? p.querySelector('[role="heading"], .M7eMe, .HoGqVe, label, legend, h2, h3, h4') : null;
           if (h && h.textContent && h.textContent.length < 150) {
             descriptors.push(this.normalize(h.textContent));
             break;
@@ -121,22 +128,17 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
       return filtered.length > 0 ? [...new Set(filtered)] : [...new Set(descriptors.filter(Boolean))];
     },
 
-    matchField(el, userData) {
+    matchField(el, userData, options = {}) {
       if (!el || !userData) return null;
       const descriptors = this.extractDescriptors(el);
       if (!descriptors.length) return null;
 
       const inputType = (el.type || '').toLowerCase();
+      const primaryEmail = this.resolveStoredValue('email', userData);
+      const secondaryEmail = this.resolveStoredValue('secondaryEmail', userData);
+      const hasDualEmail = Boolean(primaryEmail && secondaryEmail);
 
-      if (inputType === 'email') {
-        const val = this.resolveStoredValue('email', userData);
-        if (val) return { key: 'email', value: val, category: 'personal' };
-      }
-      if (inputType === 'tel') {
-        const val = this.resolveStoredValue('phone', userData);
-        if (val) return { key: 'phone', value: val, category: 'personal' };
-      }
-
+      // 1. Custom Fields Priority
       if (Array.isArray(userData.customFields)) {
         for (const custom of userData.customFields) {
           if (!custom.key || !custom.value) continue;
@@ -149,13 +151,52 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
         }
       }
 
-      for (const desc of descriptors) {
-        // Email
-        if (desc.includes('email') || desc.includes('mailaddress')) {
-          const val = this.resolveStoredValue('email', userData);
-          if (val) return { key: 'email', value: val, category: 'personal' };
-        }
+      // 2. Email Detection (Intelligent Work vs Personal vs Generic)
+      const isExplicitWorkEmail = descriptors.some(d => 
+        d.includes('workemail') || d.includes('officeemail') || d.includes('businessemail') ||
+        d.includes('companyemail') || d.includes('corporateemail') || d.includes('secondaryemail') ||
+        d.includes('altemail') || d.includes('officialemail') || d.includes('alternateemail')
+      );
 
+      const isExplicitPersonalEmail = descriptors.some(d =>
+        d.includes('personalemail') || d.includes('primaryemail') || d.includes('homeemail') || d.includes('privateemail')
+      );
+
+      const isGenericEmail = inputType === 'email' || descriptors.some(d => d.includes('email') || d.includes('mailaddress') || d.includes('emailid') || d === 'mail');
+
+      if (isExplicitWorkEmail) {
+        const val = secondaryEmail || primaryEmail;
+        if (val) return { key: 'secondaryEmail', value: val, category: 'personal', isEmail: true, emailType: 'secondary', primaryEmail, secondaryEmail, hasDualEmail };
+      }
+
+      if (isExplicitPersonalEmail) {
+        const val = primaryEmail || secondaryEmail;
+        if (val) return { key: 'email', value: val, category: 'personal', isEmail: true, emailType: 'primary', primaryEmail, secondaryEmail, hasDualEmail };
+      }
+
+      if (isGenericEmail) {
+        const chosenVal = (options.preferredEmail === 'secondary' && secondaryEmail) ? secondaryEmail : (primaryEmail || secondaryEmail);
+        if (chosenVal) {
+          return {
+            key: (options.preferredEmail === 'secondary' && secondaryEmail) ? 'secondaryEmail' : 'email',
+            value: chosenVal,
+            category: 'personal',
+            isEmail: true,
+            isGenericEmail: true,
+            emailType: (options.preferredEmail === 'secondary' && secondaryEmail) ? 'secondary' : 'primary',
+            primaryEmail,
+            secondaryEmail,
+            hasDualEmail
+          };
+        }
+      }
+
+      if (inputType === 'tel') {
+        const val = this.resolveStoredValue('phone', userData);
+        if (val) return { key: 'phone', value: val, category: 'personal' };
+      }
+
+      for (const desc of descriptors) {
         // Phone
         if (desc.includes('contactnumber') || desc.includes('phonenumber') || desc.includes('phoneno') || desc.includes('contactno') || desc.includes('mobile') || desc.includes('telephone') || desc.includes('phone') || desc.includes('whatsapp') || desc.includes('contact')) {
           if (!desc.includes('email') && !desc.includes('name')) {
@@ -274,6 +315,11 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
       if (data.address && data.address[fieldKey]) return data.address[fieldKey];
       if (data.professional && data.professional[fieldKey]) return data.professional[fieldKey];
 
+      if (fieldKey === 'secondaryEmail' || fieldKey === 'workEmail') {
+        if (data.personal?.secondaryEmail) return data.personal.secondaryEmail;
+        if (data.professional?.workEmail) return data.professional.workEmail;
+      }
+
       if (fieldKey === 'fullAddress') {
         if (data.address?.fullAddress) return data.address.fullAddress;
         if (data.address) {
@@ -316,7 +362,7 @@ var FieldMatcher = globalThis.FieldMatcher || (function () {
     },
 
     getCategoryForField(fieldKey) {
-      if (['fullName', 'firstName', 'lastName', 'email', 'phone', 'dob', 'gender'].includes(fieldKey)) return 'personal';
+      if (['fullName', 'firstName', 'lastName', 'email', 'secondaryEmail', 'phone', 'dob', 'gender'].includes(fieldKey)) return 'personal';
       if (['streetAddress', 'addressLine2', 'city', 'state', 'zipCode', 'country'].includes(fieldKey)) return 'address';
       if (['jobTitle', 'company', 'linkedin', 'github', 'bio', 'skills'].includes(fieldKey)) return 'professional';
       return 'custom';

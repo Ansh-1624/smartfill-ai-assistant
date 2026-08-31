@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       firstName: 'Alex',
       lastName: 'Morgan',
       email: 'alex.morgan@example.com',
+      secondaryEmail: 'alex.work@company.com',
       phone: '+1 (555) 234-5678',
       dob: '1995-06-15',
       gender: 'Male'
@@ -194,6 +195,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('pFirstName').value = appData.personal?.firstName || '';
     document.getElementById('pLastName').value = appData.personal?.lastName || '';
     document.getElementById('pEmail').value = appData.personal?.email || '';
+    if (document.getElementById('pSecondaryEmail')) {
+      document.getElementById('pSecondaryEmail').value = appData.personal?.secondaryEmail || '';
+    }
     document.getElementById('pPhone').value = appData.personal?.phone || '';
     document.getElementById('pDob').value = appData.personal?.dob || '';
     document.getElementById('pGender').value = appData.personal?.gender || '';
@@ -574,6 +578,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Real-Time Input Validation Handlers
     const pEmail = document.getElementById('pEmail');
     const pEmailHint = document.getElementById('pEmailHint');
+    const pSecondaryEmail = document.getElementById('pSecondaryEmail');
+    const pSecondaryEmailHint = document.getElementById('pSecondaryEmailHint');
     const pPhone = document.getElementById('pPhone');
     const pPhoneHint = document.getElementById('pPhoneHint');
     const pDob = document.getElementById('pDob');
@@ -611,6 +617,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = DataValidator.validateEmail(pEmail.value);
       updateValidationUI(pEmail, pEmailHint, res);
     });
+
+    if (pSecondaryEmail) {
+      pSecondaryEmail.addEventListener('input', () => {
+        const res = DataValidator.validateEmail(pSecondaryEmail.value);
+        updateValidationUI(pSecondaryEmail, pSecondaryEmailHint, res);
+      });
+    }
 
     pPhone.addEventListener('input', () => {
       const res = DataValidator.validatePhone(pPhone.value);
@@ -665,6 +678,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast('⚠️ Please check invalid email format');
         pEmail.focus();
         return;
+      }
+      if (appData.personal.secondaryEmail) {
+        const secEmailCheck = DataValidator.validateEmail(appData.personal.secondaryEmail);
+        if (!secEmailCheck.isValid) {
+          showToast('⚠️ Please check invalid secondary email format');
+          if (pSecondaryEmail) pSecondaryEmail.focus();
+          return;
+        }
       }
       if (!phoneCheck.isValid) {
         showToast('⚠️ Please check phone number digits');
@@ -755,6 +776,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       firstName: document.getElementById('pFirstName').value.trim(),
       lastName: document.getElementById('pLastName').value.trim(),
       email: document.getElementById('pEmail').value.trim(),
+      secondaryEmail: (document.getElementById('pSecondaryEmail')?.value || '').trim(),
       phone: document.getElementById('pPhone').value.trim(),
       dob: document.getElementById('pDob').value,
       gender: document.getElementById('pGender').value

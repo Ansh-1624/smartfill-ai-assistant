@@ -113,3 +113,241 @@
   font-size: 11px;
   color: #94a3b8;
 }
+
+/* ===================================================================
+   Dual Email Quick Picker Popover & Modal
+   =================================================================== */
+#smartfill-email-picker {
+  position: absolute;
+  z-index: 2147483647;
+  background: rgba(13, 19, 34, 0.96);
+  border: 1px solid rgba(0, 210, 255, 0.5);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 210, 255, 0.3);
+  border-radius: 14px;
+  padding: 10px;
+  width: 270px;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #f8fafc;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.96);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#smartfill-email-picker.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.sf-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px 8px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 8px;
+}
+
+.sf-picker-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #00d2ff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sf-picker-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.sf-picker-close:hover {
+  color: #ffffff;
+}
+
+.sf-email-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #f8fafc;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s ease;
+}
+
+.sf-email-option-btn:last-child {
+  margin-bottom: 0;
+}
+
+.sf-email-option-btn:hover {
+  background: rgba(0, 210, 255, 0.14);
+  border-color: rgba(0, 210, 255, 0.6);
+  transform: translateX(2px);
+}
+
+.sf-opt-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.sf-opt-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sf-opt-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.sf-opt-val {
+  font-size: 10.5px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Page Autofill Dual Email Modal */
+#smartfill-email-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: rgba(4, 7, 15, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#smartfill-email-modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sf-modal-card {
+  width: 90%;
+  max-width: 420px;
+  background: linear-gradient(145deg, #0f172a 0%, #0a0f1d 100%);
+  border: 1px solid rgba(0, 210, 255, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 210, 255, 0.25);
+  border-radius: 16px;
+  padding: 22px;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#smartfill-email-modal-overlay.show .sf-modal-card {
+  transform: scale(1);
+}
+
+.sf-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.sf-modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #00d2ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sf-modal-desc {
+  font-size: 12.5px;
+  color: #94a3b8;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+.sf-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.sf-modal-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.sf-modal-btn:hover {
+  background: rgba(0, 210, 255, 0.15);
+  border-color: #00d2ff;
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.sf-modal-btn .btn-icon {
+  font-size: 22px;
+}
+
+.sf-modal-btn .btn-main {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sf-modal-btn .btn-sub {
+  font-size: 11px;
+  color: #00d2ff;
+  margin-top: 2px;
+}
+
+.sf-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sf-modal-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sf-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
