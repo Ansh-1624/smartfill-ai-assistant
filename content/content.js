@@ -260,6 +260,96 @@
   }
 
   // =========================================================================
+  // Universal Window-Like Drag & Drop Engine
+  // Supports click, hold & drag across the viewport with boundary clamping
+  // =========================================================================
+  function makeDraggable(element, options = {}) {
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0, startY = 0;
+    let elemStartX = 0, elemStartY = 0;
+    const DRAG_THRESHOLD = 4;
+    const handle = options.handle || element;
+
+    function onPointerDown(e) {
+      if (e.button !== 0) return; // Only primary button
+      if (options.ignoreSelector && e.target.closest(options.ignoreSelector)) {
+        return;
+      }
+
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = element.getBoundingClientRect();
+      elemStartX = rect.left;
+      elemStartY = rect.top;
+      hasMoved = false;
+      isDragging = false;
+
+      function onPointerMove(moveEvent) {
+        const dx = moveEvent.clientX - startX;
+        const dy = moveEvent.clientY - startY;
+
+        if (!isDragging && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+          isDragging = true;
+          hasMoved = true;
+          element.classList.add('sf-is-dragging');
+          if (options.onDragStart) options.onDragStart();
+        }
+
+        if (isDragging) {
+          moveEvent.preventDefault();
+          const maxLeft = Math.max(8, window.innerWidth - element.offsetWidth - 8);
+          const maxTop = Math.max(8, window.innerHeight - element.offsetHeight - 8);
+          const newLeft = Math.min(Math.max(8, elemStartX + dx), maxLeft);
+          const newTop = Math.min(Math.max(8, elemStartY + dy), maxTop);
+
+          element.style.position = 'fixed';
+          element.style.left = `${newLeft}px`;
+          element.style.top = `${newTop}px`;
+          element.style.right = 'auto';
+          element.style.bottom = 'auto';
+          element.style.margin = '0';
+          element.style.transform = 'none';
+          element.classList.add('sf-user-dragged');
+
+          if (options.onDrag) {
+            options.onDrag({ x: newLeft, y: newTop });
+          }
+        }
+      }
+
+      function onPointerUp(upEvent) {
+        window.removeEventListener('pointermove', onPointerMove, true);
+        window.removeEventListener('pointerup', onPointerUp, true);
+        window.removeEventListener('mousemove', onPointerMove, true);
+        window.removeEventListener('mouseup', onPointerUp, true);
+
+        element.classList.remove('sf-is-dragging');
+
+        if (isDragging) {
+          upEvent.preventDefault();
+          upEvent.stopPropagation();
+          const finalPos = { x: parseFloat(element.style.left), y: parseFloat(element.style.top) };
+          if (options.onDragEnd) options.onDragEnd(finalPos);
+        } else {
+          if (options.onClick) {
+            options.onClick(upEvent);
+          }
+        }
+        isDragging = false;
+      }
+
+      window.addEventListener('pointermove', onPointerMove, { passive: false, capture: true });
+      window.addEventListener('pointerup', onPointerUp, { capture: true });
+      window.addEventListener('mousemove', onPointerMove, { passive: false, capture: true });
+      window.addEventListener('mouseup', onPointerUp, { capture: true });
+    }
+
+    handle.addEventListener('pointerdown', onPointerDown);
+    handle.addEventListener('mousedown', onPointerDown);
+  }
+
+  // =========================================================================
   // Dual Email Interactive Popover & Modal
   // =========================================================================
   function initEmailPicker() {
@@ -268,14 +358,14 @@
     emailPickerEl = document.createElement('div');
     emailPickerEl.id = 'smartfill-email-picker';
     emailPickerEl.innerHTML = `
-      <div class="sf-picker-header">
+      <div class="sf-picker-header" title="Click, hold & drag to move">
         <span class="sf-picker-title">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
           </svg>
           Choose Email
         </span>
-        <button type="button" class="sf-picker-close" id="sfEmailPickerClose">✕</button>
+        <button type="button" class="sf-picker-close" id="sfEmailPickerClose" title="Remove from screen (Close)">✕</button>
       </div>
       <button type="button" class="sf-email-option-btn" id="sfOptPrimaryEmail">
         <span class="sf-opt-icon">👤</span>
@@ -293,6 +383,12 @@
       </button>
     `;
     document.body.appendChild(emailPickerEl);
+
+    // Make Email Picker window-like draggable
+    makeDraggable(emailPickerEl, {
+      handle: emailPickerEl.querySelector('.sf-picker-header'),
+      ignoreSelector: '#sfEmailPickerClose'
+    });
 
     document.getElementById('sfEmailPickerClose').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -326,12 +422,15 @@
     document.getElementById('sfOptPrimaryVal').textContent = primaryEmail;
     document.getElementById('sfOptSecondaryVal').textContent = secondaryEmail;
 
-    const rect = target.getBoundingClientRect();
-    const scrollX = window.scrollX || window.pageXOffset;
-    const scrollY = window.scrollY || window.pageYOffset;
+    if (!emailPickerEl.classList.contains('sf-user-dragged')) {
+      const rect = target.getBoundingClientRect();
+      const scrollX = window.scrollX || window.pageXOffset;
+      const scrollY = window.scrollY || window.pageYOffset;
 
-    emailPickerEl.style.top = `${rect.bottom + scrollY + 8}px`;
-    emailPickerEl.style.left = `${Math.max(10, rect.left + scrollX)}px`;
+      emailPickerEl.style.position = 'absolute';
+      emailPickerEl.style.top = `${rect.bottom + scrollY + 8}px`;
+      emailPickerEl.style.left = `${Math.max(10, rect.left + scrollX)}px`;
+    }
     emailPickerEl.classList.add('visible');
   }
 
@@ -348,14 +447,14 @@
     emailModalOverlayEl.id = 'smartfill-email-modal-overlay';
     emailModalOverlayEl.innerHTML = `
       <div class="sf-modal-card">
-        <div class="sf-modal-header">
+        <div class="sf-modal-header" title="Click, hold & drag to move">
           <div class="sf-modal-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2.5">
               <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
             </svg>
             Dual Email Autofill
           </div>
-          <button type="button" class="sf-picker-close" id="sfModalCloseBtn">✕</button>
+          <button type="button" class="sf-picker-close" id="sfModalCloseBtn" title="Remove from screen (Close)">✕</button>
         </div>
         <div class="sf-modal-desc">
           This form requests your email. Select which email address to use for this submission:
@@ -382,6 +481,15 @@
       </div>
     `;
     document.body.appendChild(emailModalOverlayEl);
+
+    const modalCard = emailModalOverlayEl.querySelector('.sf-modal-card');
+    const modalHeader = emailModalOverlayEl.querySelector('.sf-modal-header');
+
+    // Make modal card draggable by clicking and holding the header or card
+    makeDraggable(modalCard, {
+      handle: modalHeader,
+      ignoreSelector: '#sfModalCloseBtn'
+    });
   }
 
   function showDualEmailAutofillModal(userData, categoryFilter, primaryEmail, secondaryEmail) {
@@ -417,47 +525,74 @@
 
   // =========================================================================
   // Floating Helper Badge Setup & Positioning
+  // Movable anywhere across the screen + dismiss cross button
   // =========================================================================
+  let userCustomBadgePos = null;
+  let isBadgeTemporarilyDismissed = false;
+
   function initFloatingBadge() {
     if (document.getElementById('smartfill-floating-badge')) return;
 
     floatingBadgeEl = document.createElement('div');
     floatingBadgeEl.id = 'smartfill-floating-badge';
     floatingBadgeEl.innerHTML = `
-      <svg class="sf-icon" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2.5">
-        <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
-      </svg>
-      <span>SmartFill</span>
+      <div class="sf-badge-main" title="Click to SmartFill • Click, hold & drag anywhere to move">
+        <svg class="sf-icon" viewBox="0 0 24 24" fill="none" stroke="#00d2ff" stroke-width="2.5">
+          <path d="m13 2-2 2.5h3L11 8l5-2-3 8h3L11 22l1-7H9l2-5-4 1.5L13 2z"/>
+        </svg>
+        <span>SmartFill</span>
+      </div>
+      <button type="button" class="sf-badge-close" id="sfBadgeCloseBtn" title="Remove from screen (Close)">✕</button>
     `;
     document.body.appendChild(floatingBadgeEl);
 
-    floatingBadgeEl.addEventListener('mousedown', async (e) => {
+    // Cross button to remove from screen immediately
+    const closeBtn = document.getElementById('sfBadgeCloseBtn');
+    closeBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      if (!isContextValid()) return;
+      isBadgeTemporarilyDismissed = true;
+      floatingBadgeEl.classList.remove('visible');
+    });
+    closeBtn.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+    closeBtn.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+    });
 
-      try {
-        if (!cachedUserData) {
-          cachedUserData = await chrome.storage.local.get(null);
-        }
-      } catch (_) {}
+    // Make entire floating badge window-like draggable with click-to-autofill
+    makeDraggable(floatingBadgeEl, {
+      ignoreSelector: '#sfBadgeCloseBtn',
+      onDragEnd: (pos) => {
+        userCustomBadgePos = pos;
+      },
+      onClick: async (e) => {
+        if (!isContextValid()) return;
 
-      if (activeFocusedInput && cachedUserData) {
-        const match = FieldMatcher.matchField(activeFocusedInput, cachedUserData);
-        // If it's a generic email field and user has dual emails configured, show interactive picker
-        if (match && match.isEmail && match.hasDualEmail && match.primaryEmail && match.secondaryEmail) {
-          showEmailPicker(activeFocusedInput, match.primaryEmail, match.secondaryEmail);
-          return;
-        }
+        try {
+          if (!cachedUserData) {
+            cachedUserData = await chrome.storage.local.get(null);
+          }
+        } catch (_) {}
 
-        if (match && match.value) {
-          injectValue(activeFocusedInput, match.value);
-          showToastHUD('Field Filled', `Inserted ${match.key}`);
-        } else {
+        if (activeFocusedInput && cachedUserData) {
+          const match = FieldMatcher.matchField(activeFocusedInput, cachedUserData);
+          // If it's a generic email field and user has dual emails configured, show interactive picker
+          if (match && match.isEmail && match.hasDualEmail && match.primaryEmail && match.secondaryEmail) {
+            showEmailPicker(activeFocusedInput, match.primaryEmail, match.secondaryEmail);
+            return;
+          }
+
+          if (match && match.value) {
+            injectValue(activeFocusedInput, match.value);
+            showToastHUD('Field Filled ⚡', `Inserted ${match.key}`);
+          } else {
+            autofillCurrentPage(cachedUserData);
+          }
+        } else if (cachedUserData) {
           autofillCurrentPage(cachedUserData);
         }
-      } else if (cachedUserData) {
-        autofillCurrentPage(cachedUserData);
       }
     });
 
@@ -466,6 +601,7 @@
       const target = e.target;
       if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) {
         activeFocusedInput = target;
+        isBadgeTemporarilyDismissed = false; // Reset dismiss on new field focus
         positionBadge(target);
       }
     });
@@ -486,17 +622,17 @@
     });
 
     window.addEventListener('scroll', () => {
-      if (activeFocusedInput && floatingBadgeEl?.classList.contains('visible')) {
+      if (activeFocusedInput && floatingBadgeEl?.classList.contains('visible') && !userCustomBadgePos) {
         positionBadge(activeFocusedInput);
       }
-      if (activeFocusedInput && emailPickerEl?.classList.contains('visible')) {
+      if (activeFocusedInput && emailPickerEl?.classList.contains('visible') && !emailPickerEl.classList.contains('sf-user-dragged')) {
         hideEmailPicker();
       }
     }, { passive: true });
 
     // MutationObserver to detect dynamically rendered SPA forms
     const observer = new MutationObserver(() => {
-      if (activeFocusedInput && floatingBadgeEl?.classList.contains('visible')) {
+      if (activeFocusedInput && floatingBadgeEl?.classList.contains('visible') && !userCustomBadgePos) {
         positionBadge(activeFocusedInput);
       }
     });
@@ -504,13 +640,24 @@
   }
 
   function positionBadge(target) {
-    if (!floatingBadgeEl) return;
+    if (!floatingBadgeEl || isBadgeTemporarilyDismissed) return;
+
+    if (userCustomBadgePos) {
+      // Retain user custom placed position across the screen
+      floatingBadgeEl.style.position = 'fixed';
+      floatingBadgeEl.style.top = `${userCustomBadgePos.y}px`;
+      floatingBadgeEl.style.left = `${userCustomBadgePos.x}px`;
+      floatingBadgeEl.classList.add('visible');
+      return;
+    }
+
     const rect = target.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) return;
 
     const scrollX = window.scrollX || window.pageXOffset;
     const scrollY = window.scrollY || window.pageYOffset;
 
+    floatingBadgeEl.style.position = 'absolute';
     floatingBadgeEl.style.top = `${rect.top + scrollY - 28}px`;
     floatingBadgeEl.style.left = `${rect.right + scrollX - 90}px`;
     floatingBadgeEl.classList.add('visible');
